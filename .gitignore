@@ -36,10 +36,4 @@ phpunit.phar
 
 #
 node_modules
-
-backend/web/assets
-backend/runtime
-
-frontend/web/assets
 frontend/web/dist
-frontend/runtime
