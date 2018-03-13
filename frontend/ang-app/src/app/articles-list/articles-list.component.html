@@ -3,10 +3,6 @@
 </p>
 
 
-<div *ngFor="let article of articles">
-    <pre>
-        <code>
-            {{article | json}}
-        </code>
-    </pre>
+<div *ngFor="let article of articles" class="article-container">
+    <app-article-preview [article]="article"></app-article-preview>
 </div>

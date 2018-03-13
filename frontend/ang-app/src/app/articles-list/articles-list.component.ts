@@ -2,10 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {ArticleListService} from '../services/article-list.service';
 import {Article} from "../classes/article.class";
 
+/* Компонент списка статей */
+
 @Component({
     selector: 'app-articles-list',
     templateUrl: './articles-list.component.html',
-    styleUrls: ['./articles-list.component.css']
+    styleUrls: ['./articles-list.component.scss']
 })
 export class ArticlesListComponent implements OnInit {
 

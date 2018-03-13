@@ -8,6 +8,7 @@ import {FooterComponent} from "./components/footer/footer.component";
 import { ArticlesListComponent } from './articles-list/articles-list.component';
 import {ArticleListService} from "./services/article-list.service";
 import {HttpClientModule} from "@angular/common/http";
+import { ArticlePreviewComponent } from './article-preview/article-preview.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {HttpClientModule} from "@angular/common/http";
         HeaderComponent,
         FooterComponent,
         AppComponent,
-        ArticlesListComponent
+        ArticlesListComponent,
+        ArticlePreviewComponent
     ],
     imports: [
         BrowserModule,

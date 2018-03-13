@@ -1,0 +1,12 @@
+<div class="author">{{article.author}}</div>
+<h2><a [href]="article.url" target="_blank">{{article.title}}</a></h2>
+<!-- Поскольку content нам нужно вывести как raw html, то добавляем его через innerHTML, а не так, как выводили заголовок -->
+<div [innerHtml]="article.content" class="annotation"></div>
+<a href="/">Показать все новость (еще в разработке)</a>
+
+<pre>
+    "Сырой" JSON статьи:
+    <code>
+        {{article | json}}
+    </code>
+</pre>

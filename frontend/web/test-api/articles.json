@@ -3,7 +3,7 @@
     "title": "How to handle state in React. The missing FAQ.",
     "author": "Osmel Mora",
     "image": "",
-    "content": "lorem",
+    "content": "lorem <br> <b>ipsum</b>",
     "url": "https://medium.com/react-ecosystem/how-to-handle-state-in-react-6f2d3cd73a0c"
   },
   {
