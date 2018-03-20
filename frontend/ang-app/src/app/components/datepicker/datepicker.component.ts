@@ -154,7 +154,8 @@ export class DatepickerComponent implements OnInit {
     }
 
     setToday() {
-        this.date = this.selectedDate = new Date();
+        this.date = new Date();
+        this.selectedDate = new Date();
     }
 
     isDaySelected(dayIndex) {

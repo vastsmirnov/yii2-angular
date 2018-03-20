@@ -1,69 +1,101 @@
+$dayWidth: 2rem;
+$dayMargin: 0.1rem;
+$contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
+
 :host {
-    width: 16rem;
-    display: block;
+    display: inline-block;
+
 }
 
-.cal {
-    display: flex;
-    width: 16rem;
-    flex-wrap: wrap;
-}
+.rmm-ng-datepicker {
+    border: 1px solid #ddd;
 
-.cal > span {
-    width: 2rem;
-    text-align: center;
-}
+    &__block {
+        padding: 1rem;
 
-.control {
-    width: 16rem;
-    display: flex;
-    justify-content: space-between;
-}
+        &--border-bottom {
+            border-bottom: 1px solid #ddd;
+        }
+    }
 
-.day {
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    margin: 0.1rem;
-    cursor: pointer;
-    box-sizing: border-box;
-}
+    &__controls {
+        display: flex;
+        justify-content: space-between;
+    }
 
-.day:hover {
-    border: 1px solid #ccc;
-}
+    &__calendar {
+        display: flex;
+        flex-wrap: wrap;
+        width: $contentWidth;
+    }
 
-.day.current {
-    background: #ccc;
-}
+    &__day {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: $dayWidth;
+        width: $dayWidth;
+        margin: $dayMargin;
+        cursor: pointer;
+        border-radius: 50%;
 
-.day.selected {
-    background: #3e9bcc;
-    color: white;
-}
+        &:hover {
+            background: #eee;
+        }
 
-.month {
-    position: relative;
+        &.--current {
+            background: #ccc;
+        }
+
+        &.--selected {
+            background: #3e9bcc;
+            color: white;
+        }
+    }
 
     &__select {
+        position: relative;
+    }
+
+    &__select-options-container {
         position: absolute;
-        min-height: 10rem;
-        background: white;
-        border: 1px solid grey;
         left: 0;
         top: 50%;
         transform: translateY(-50%);
-        font-size: 0.8em;
-        padding: 0.5em;
-    }
-}
+        background: #fff;
+        //border: 1px solid #eee;
+        box-shadow: 0 0 10px 3px #ccc;
+        padding: 0.25rem 0;
 
-.year {
-    &__select {
-        div {
+        &--right {
+            right: 0;
+            left: auto;
+        }
+    }
+
+    &__select-option {
+        padding: 0 0.75rem;
+        line-height: 1.5;
+        &:hover {
+            background: #3e9bcc;
+            color: white;
+            cursor: pointer;
+        }
+    }
+
+    &__today-button {
+        background: none;
+        border: none;
+        text-align: center;
+        color: #3e9bcc;
+        padding: 1rem;
+        display: block;
+        width: 100%;
+        font-family: inherit;
+        font-size: 1rem;
+
+        &:hover {
+            background: #fafafa;
             cursor: pointer;
         }
     }
