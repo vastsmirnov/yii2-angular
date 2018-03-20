@@ -1,14 +1,24 @@
 <div>
     <div class="control">
-        <div>
-            <button (click)="setMonth(month - 1)">-</button>
-            <button (click)="setMonth(month + 1)">+</button>
-            {{months[month]}}
+        <div class="month">
+<!--            <button (click)="setMonth(month - 1)">-</button>
+            <button (click)="setMonth(month + 1)">+</button>-->
+            <span (click)="showMonthSelect()">
+                {{months[month]}}
+            </span>
+
+            <div class="month__select" *ngIf="isMonthSelectVisible">
+                <div *ngFor="let m of months; let i = index" (click)="setMonth(i); hideMonthSelect()">{{m}}</div>
+            </div>
         </div>
-        <div>
-            {{year}}
-            <button (click)="setYear(year - 1)">-</button>
-            <button (click)="setYear(year + 1)">+</button>
+        <div class="month">
+            <span (click)="showYearSelect()">{{year}}</span>
+
+            <div class="month__select year__select" *ngIf="isYearSelectVisible" (wheel)="onYearScroll($event)">
+                <div *ngFor="let y of visibleYears" (click)="setYear(y); hideYearSelect();">{{y}}</div>
+            </div>
+            <!--<button (click)="setYear(year - 1)">-</button>
+            <button (click)="setYear(year + 1)">+</button>-->
         </div>
     </div>
 

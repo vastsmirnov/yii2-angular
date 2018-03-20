@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
     selector: 'app-datepicker',
     templateUrl: './datepicker.component.html',
-    styleUrls: ['./datepicker.component.css']
+    styleUrls: ['./datepicker.component.scss']
 })
 export class DatepickerComponent implements OnInit {
 
@@ -45,11 +45,56 @@ export class DatepickerComponent implements OnInit {
         'Декабрь',
     ];
 
-    constructor() {
+    isMonthSelectVisible = false;
+    isYearSelectVisible = false;
+
+    currentVisibleYear = this.date.getFullYear();
+
+    constructor(private elementRef: ElementRef) {
     }
 
     ngOnInit() {
+        document.addEventListener('click', (event) => {
+            if (!this.isMonthSelectVisible && !this.isYearSelectVisible) {
+                return;
+            }
+            if (!this.elementRef.nativeElement.contains(event.target)) {
+                if (this.isYearSelectVisible) {
+                    this.hideYearSelect();
+                }
 
+                if (this.isMonthSelectVisible) {
+                    this.hideMonthSelect();
+                }
+            }
+        })
+    }
+
+    showMonthSelect() {
+        this.isMonthSelectVisible = true;
+    }
+
+    hideMonthSelect() {
+        this.isMonthSelectVisible = false;
+    }
+
+    showYearSelect() {
+        this.currentVisibleYear = this.year;
+        this.isYearSelectVisible = true;
+    }
+
+    hideYearSelect() {
+        this.isYearSelectVisible = false;
+    }
+
+    onYearScroll(event) {
+        event.preventDefault();
+        this.currentVisibleYear += event.deltaY >= 0 ? 5: -5;
+    }
+
+    get visibleYears() {
+
+        return Array.from(Array(10)).map((n, i) => this.currentVisibleYear - 6 + i);
     }
 
     setMonth(month) {
@@ -69,7 +114,7 @@ export class DatepickerComponent implements OnInit {
     }
 
     selectDate(day) {
-        this.selectedDate = new Date(this.year, this.month + 1, day);
+        this.selectedDate = new Date(this.year, this.month, day);
 
         this.onSelect.emit({
             date: this.selectedDate,
@@ -131,7 +176,6 @@ export class DatepickerComponent implements OnInit {
         const sYear = date.getFullYear();
         const sDate = date.getDate();
         return (this.month === sMonth) && (this.year === sYear) && (dayIndex === sDate);
-
     }
 
 
@@ -145,7 +189,7 @@ export class DatepickerComponent implements OnInit {
             day = '0' + day;
         }
 
-        let month = '' + date.getMonth();
+        let month = '' + (date.getMonth() + 1);
         if (month.length === 1) {
             month = '0' + month;
         }

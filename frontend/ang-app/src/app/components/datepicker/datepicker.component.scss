@@ -1,3 +1,8 @@
+:host {
+    width: 16rem;
+    display: block;
+}
+
 .cal {
     display: flex;
     width: 16rem;
@@ -38,4 +43,28 @@
 .day.selected {
     background: #3e9bcc;
     color: white;
+}
+
+.month {
+    position: relative;
+
+    &__select {
+        position: absolute;
+        min-height: 10rem;
+        background: white;
+        border: 1px solid grey;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8em;
+        padding: 0.5em;
+    }
+}
+
+.year {
+    &__select {
+        div {
+            cursor: pointer;
+        }
+    }
 }
