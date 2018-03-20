@@ -1,0 +1,27 @@
+<div>
+    <div class="control">
+        <div>
+            <button (click)="setMonth(month - 1)">-</button>
+            <button (click)="setMonth(month + 1)">+</button>
+            {{months[month]}}
+        </div>
+        <div>
+            {{year}}
+            <button (click)="setYear(year - 1)">-</button>
+            <button (click)="setYear(year + 1)">+</button>
+        </div>
+    </div>
+
+    <div class="cal">
+        <span *ngFor="let day of weekdays" class="day">{{day}}  </span>
+    </div>
+
+    <div class="cal">
+        <span *ngFor="let day of emptyDaysBefore" class="day"></span>
+        <span *ngFor="let day of days; let i = index" (click)="selectDate(i + 1)" class="day" [ngClass]="{'selected': isDaySelected(i + 1), 'current': isToday(i + 1)}">{{i + 1}} </span>
+    </div>
+
+    <p><button (click)="setToday()">Сегодня</button></p>
+
+    <p>Выбранная дата: {{selectedDate}}</p>
+</div>

@@ -1,0 +1,41 @@
+.cal {
+    display: flex;
+    width: 16rem;
+    flex-wrap: wrap;
+}
+
+.cal > span {
+    width: 2rem;
+    text-align: center;
+}
+
+.control {
+    width: 16rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.day {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin: 0.1rem;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.day:hover {
+    border: 1px solid #ccc;
+}
+
+.day.current {
+    background: #ccc;
+}
+
+.day.selected {
+    background: #3e9bcc;
+    color: white;
+}
