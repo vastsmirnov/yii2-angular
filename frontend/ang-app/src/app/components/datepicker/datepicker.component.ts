@@ -69,12 +69,22 @@ export class DatepickerComponent implements OnInit {
     }
 
     selectDate(day) {
-        this.selectedDate = new Date(this.year, this.month, day);
+        this.selectedDate = new Date(this.year, this.month + 1, day);
 
         this.onSelect.emit({
             date: this.selectedDate,
             string: this.dateToFormat(this.selectedDate)
         });
+    }
+
+    onScroll(event) {
+        event.preventDefault();
+
+        if (event.deltaY >= 0) {
+            this.setMonth(this.month + 1);
+        } else {
+            this.setMonth(this.month - 1);
+        }
     }
 
     get month() {
@@ -94,7 +104,8 @@ export class DatepickerComponent implements OnInit {
     }
 
     get emptyDaysBefore() {
-        return new Array(this.date.getDay() % 7 + 1)
+        const emptyDaysLength = this.date.getDay() % 7 + 1;
+        return new Array(emptyDaysLength === 7 ? 0: emptyDaysLength )
     }
 
     setToday() {
@@ -110,7 +121,7 @@ export class DatepickerComponent implements OnInit {
         const sYear = this.selectedDate.getFullYear();
         const sDate = this.selectedDate.getDate();
 
-        return (this.month === sMonth) && (this.year === sYear) && (dayIndex === sDate);
+        return (this.month + 1 === sMonth) && (this.year === sYear) && (dayIndex === sDate);
 
     }
 
