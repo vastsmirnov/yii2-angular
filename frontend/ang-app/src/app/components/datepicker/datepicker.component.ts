@@ -92,6 +92,10 @@ export class DatepickerComponent implements OnInit {
         this.currentVisibleYear += event.deltaY >= 0 ? 5: -5;
     }
 
+    incrementVisibleYearByValue(value: number) {
+        this.currentVisibleYear += value;
+    }
+
     get visibleYears() {
 
         return Array.from(Array(10)).map((n, i) => this.currentVisibleYear - 6 + i);

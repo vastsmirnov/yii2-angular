@@ -16,7 +16,9 @@
                 </span>
 
                 <div class="rmm-ng-datepicker__select-options-container rmm-ng-datepicker__select-options-container--right" *ngIf="isYearSelectVisible" (wheel)="onYearScroll($event)">
-                    <div *ngFor="let y of visibleYears" (click)="setYear(y); hideYearSelect();" class="rmm-ng-datepicker__select-option">{{y}}</div>
+                    <div (click)="incrementVisibleYearByValue(-5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--up">up</div>
+                    <div *ngFor="let y of visibleYears" (click)="setYear(y); hideYearSelect();" class="rmm-ng-datepicker__select-option" [ngClass]="{'rmm-ng-datepicker__select-option--current': year === y}">{{y}}</div>
+                    <div (click)="incrementVisibleYearByValue(5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--down">down</div>
                 </div>
             </div>
         </div>

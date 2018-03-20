@@ -63,9 +63,9 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
         top: 50%;
         transform: translateY(-50%);
         background: #fff;
-        //border: 1px solid #eee;
         box-shadow: 0 0 10px 3px #ccc;
         padding: 0.25rem 0;
+        user-select: none;
 
         &--right {
             right: 0;
@@ -76,10 +76,21 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
     &__select-option {
         padding: 0 0.75rem;
         line-height: 1.5;
+
         &:hover {
             background: #3e9bcc;
             color: white;
             cursor: pointer;
+        }
+
+        &--current {
+            background: #ccc;
+        }
+
+        &--up,
+        &--down {
+            text-align: center;
+            line-height: 1;
         }
     }
 
