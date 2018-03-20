@@ -166,7 +166,7 @@ export class DatepickerComponent implements OnInit {
         const sYear = this.selectedDate.getFullYear();
         const sDate = this.selectedDate.getDate();
 
-        return (this.month + 1 === sMonth) && (this.year === sYear) && (dayIndex === sDate);
+        return (this.month === sMonth) && (this.year === sYear) && (dayIndex === sDate);
 
     }
 
