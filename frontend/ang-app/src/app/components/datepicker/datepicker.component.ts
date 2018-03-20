@@ -70,6 +70,11 @@ export class DatepickerComponent implements OnInit {
 
     selectDate(day) {
         this.selectedDate = new Date(this.year, this.month, day);
+
+        this.onSelect.emit({
+            date: this.selectedDate,
+            string: this.dateToFormat(this.selectedDate)
+        });
     }
 
     get month() {
@@ -118,4 +123,24 @@ export class DatepickerComponent implements OnInit {
 
     }
 
+
+    dateToFormat(date: Date) {
+        if (!date) {
+            return '';
+        }
+
+        let day = '' + date.getDate();
+        if (day.length === 1) {
+            day = '0' + day;
+        }
+
+        let month = '' + date.getMonth();
+        if (month.length === 1) {
+            month = '0' + month;
+        }
+
+        const year = '' + date.getFullYear();
+
+        return '' + this.format.replace('dd', day).replace('mm', month).replace('yyyy', year);
+    }
 }
