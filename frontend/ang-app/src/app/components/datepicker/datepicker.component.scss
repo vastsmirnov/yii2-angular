@@ -4,7 +4,7 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
 
 :host {
     display: inline-block;
-
+    user-select: none;
 }
 
 .rmm-ng-datepicker {
@@ -27,6 +27,16 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
         display: flex;
         flex-wrap: wrap;
         width: $contentWidth;
+    }
+
+    &__calendar-button {
+        text-align: center;
+
+        &:hover {
+            background: #3e9bcc;
+            color: white;
+            cursor: pointer;
+        }
     }
 
     &__day {
@@ -61,6 +71,11 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
         position: relative;
         cursor: pointer;
 
+        > span {
+            display: flex;
+            align-items: center;
+        }
+
         > span:hover {
             color: #3e9bcc;
         }
@@ -74,7 +89,6 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
         background: #fff;
         box-shadow: 0 0 10px 3px #ccc;
         padding: 0.25rem 0;
-        user-select: none;
         z-index: 2;
 
         &--right {
@@ -120,4 +134,17 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
             cursor: pointer;
         }
     }
+}
+
+@mixin icon() {
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 1em;
+}
+
+.rmm-inline-icon-arrow-up-down {
+    @include icon();
+    background-image: url("./arrows-up-and-down.svg");
 }
