@@ -21,6 +21,15 @@ export class DatepickerComponent implements OnInit {
     @ViewChild('yearSelect') private yearSelectDOM: ElementRef;
 
     /**
+     * Тип календаря:
+     * dd - выбор с точностью до дня
+     * mm - выбор с точностью до месяца
+     * yyyy - выбор года
+     * @type {string}
+     */
+    type: 'dd' | 'mm' | 'yyyy' = 'dd';
+
+    /**
      * Сегодняшняя дата
      * @type {Date}
      */
@@ -88,9 +97,16 @@ export class DatepickerComponent implements OnInit {
             }
         });
 
-        console.log(this.stringToDate('22.01.2007'));
-        console.log(this.stringToDate('28.02.2018'));
-        console.log(this.stringToDate('55.22.2018'));
+        /**
+         * Определяем тип пикера в зависимости от указанного формата даты
+         */
+        if (this.format.indexOf('dd') >= 0) {
+            this.type = 'dd';
+        } else if (this.format.indexOf('mm') >= 0) {
+            this.type = 'mm';
+        } else {
+            this.type = 'yyyy';
+        }
     }
 
     showMonthSelect() {
@@ -118,6 +134,16 @@ export class DatepickerComponent implements OnInit {
     onYearScroll(event) {
         event.preventDefault();
         this.currentVisibleYear += event.deltaY >= 0 ? 5: -5;
+    }
+
+    /**
+     * При скролле месяцев будем менять текущий год
+     * @param event
+     */
+    onMonthScroll(event) {
+        event.preventDefault();
+        console.log('---: ', this.year);
+        this.setYear(this.year + +(event.deltaY >= 0 ? 1 : -1));
     }
 
     /**
@@ -254,6 +280,7 @@ export class DatepickerComponent implements OnInit {
         this.date = new Date(this.today);
         this.date.setDate(1);
         this.selectedDate = new Date(this.today);
+        this.currentVisibleYear = this.today.getFullYear();
     }
 
     /**
