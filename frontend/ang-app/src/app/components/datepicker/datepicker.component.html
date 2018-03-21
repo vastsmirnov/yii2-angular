@@ -1,5 +1,5 @@
 <div class="rmm-ng-datepicker">
-    <div class="rmm-ng-datepicker__block rmm-ng-datepicker__block--border-bottom" *ngIf="type !== 'yyyy'">
+    <div class="rmm-ng-datepicker__block rmm-ng-datepicker__block--border-bottom" *ngIf="type === 'dd'">
         <div class="rmm-ng-datepicker__controls">
             <div class="rmm-ng-datepicker__select" #monthSelect *ngIf=" type === 'dd'">
                 <span (click)="showMonthSelect()">
@@ -21,7 +21,10 @@
 
                 <div class="rmm-ng-datepicker__select-options-container rmm-ng-datepicker__select-options-container--right" *ngIf="isYearSelectVisible" (wheel)="onYearScroll($event)">
                     <div (click)="incrementVisibleYearByValue(-5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--up">▴</div>
-                    <div *ngFor="let y of visibleYears" (click)="setYear(y); hideYearSelect();" class="rmm-ng-datepicker__select-option" [ngClass]="{'rmm-ng-datepicker__select-option--current': year === y}">{{y}}</div>
+                    <div *ngFor="let y of visibleYears"
+                         (click)="setYear(y); hideYearSelect();"
+                         class="rmm-ng-datepicker__select-option"
+                         [ngClass]="{'--current': year === y}">{{y}}</div>
                     <div (click)="incrementVisibleYearByValue(5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--down">▾</div>
                 </div>
             </div>
@@ -47,34 +50,48 @@
 <p>Выбранная дата: {{dateToFormat(selectedDate)}}</p>
 
 <ng-template #dayCalendar>
-    <div class="rmm-ng-datepicker__calendar-button" (click)="setMonth(month - 1)">
+    <!--<div class="rmm-ng-datepicker__calendar-button" (click)="setMonth(month - 1)">
         <span>▲</span>
-    </div>
+    </div>-->
     <div class="rmm-ng-datepicker__calendar" (wheel)="onScroll($event)">
         <span *ngFor="let day of daysBefore;" class="rmm-ng-datepicker__day rmm-ng-datepicker__day--disabled" (click)="setMonth(month - 1); selectDate(day)">{{day}}</span>
         <span *ngFor="let day of days; let i = index" (click)="selectDate(i + 1)" class="rmm-ng-datepicker__day" [ngClass]="{'--selected': isDaySelected(i + 1), '--current': isToday(i + 1)}">{{i + 1}} </span>
         <span *ngFor="let day of daysAfter" class="rmm-ng-datepicker__day rmm-ng-datepicker__day--disabled" (click)="setMonth(month + 1); selectDate(day)">{{day}}</span>
     </div>
-    <div class="rmm-ng-datepicker__calendar-button" (click)="setMonth(month + 1)">
+    <!--<div class="rmm-ng-datepicker__calendar-button" (click)="setMonth(month + 1)">
         <span>▼</span>
-    </div>
+    </div>-->
 </ng-template>
 
 <ng-template #monthCalendar>
-    <div class="rmm-ng-datepicker__calendar-button" (click)="setYear(year - 1)">
-        <span>▲</span>
-    </div>
-    <div (wheel)="onMonthScroll($event)" class="rmm-ng-datepicker__month-calendar">
-        <div *ngFor="let m of months; let i = index" (click)="setMonth(i); selectDate(1)"
-             class="rmm-ng-datepicker__month-calendar-item"
-             [ngClass]="{
+    <!--<div class="rmm-ng-datepicker__calendar-button" (click)="setYear(year - 1)">
+        <span>▲ {{year - 1}}</span>
+    </div>-->
+    <div style="display: flex; align-items: center" (wheel)="onMonthScroll($event)">
+        <div>
+            <div (click)="incrementVisibleYearByValue(-5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--up">▴</div>
+            <div *ngFor="let y of visibleYears" (click)="setYear(y); hideYearSelect();"
+                 class="rmm-ng-datepicker__select-option"
+                 [ngClass]="{
+                 '--current': today.getFullYear() === y,
+                 '--selected': year === y
+                 }">
+                {{y}}
+            </div>
+            <div (click)="incrementVisibleYearByValue(5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--down">▾</div>
+        </div>
+        <div class="rmm-ng-datepicker__month-calendar" >
+            <div *ngFor="let m of months; let i = index" (click)="setMonth(i); selectDate(1)"
+                 class="rmm-ng-datepicker__month-calendar-item"
+                 [ngClass]="{
                 '--current': year === today.getFullYear() && today.getMonth() === i,
                 '--selected': selectedDate && year === selectedDate.getFullYear() && selectedDate.getMonth() === i
             }">{{m}}</div>
+        </div>
     </div>
-    <div class="rmm-ng-datepicker__calendar-button" (click)="setYear(year + 1)">
-        <span>▼</span>
-    </div>
+    <!--<div class="rmm-ng-datepicker__calendar-button" (click)="setYear(year + 1)">
+        <span>▼ {{year + 1}}</span>
+    </div>-->
 </ng-template>
 
 <ng-template #yearCalendar>

@@ -130,8 +130,13 @@ $monthMargin: $dayMargin;
             cursor: pointer;
         }
 
-        &--current {
+        &.--current {
             background: #ccc;
+        }
+
+        &.--selected {
+            background: #3e9bcc;
+            color: white;
         }
 
         &--up,
@@ -164,6 +169,12 @@ $monthMargin: $dayMargin;
         width: $contentWidth;
         display: flex;
         flex-wrap: wrap;
+    }
+
+    &__month-calendar {
+        border-left: 1px solid #ccc;
+        padding-left: 1rem;
+        margin-left: 1rem;
     }
 
     &__month-calendar-item,

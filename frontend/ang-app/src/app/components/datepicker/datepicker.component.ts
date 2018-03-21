@@ -142,8 +142,8 @@ export class DatepickerComponent implements OnInit {
      */
     onMonthScroll(event) {
         event.preventDefault();
-        console.log('---: ', this.year);
         this.setYear(this.year + +(event.deltaY >= 0 ? 1 : -1));
+        this.currentVisibleYear = this.year;
     }
 
     /**
@@ -160,7 +160,8 @@ export class DatepickerComponent implements OnInit {
      * @returns {any[]}
      */
     get visibleYears() {
-        return Array.from(Array(9)).map((n, i) => this.currentVisibleYear - 4 + i);
+        const countToShow = this.type === 'mm' ? 7 : 9;
+        return Array.from(Array(countToShow)).map((n, i) => this.currentVisibleYear - Math.floor(countToShow/2) + i);
     }
 
     /**
