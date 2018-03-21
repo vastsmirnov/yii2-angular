@@ -65,7 +65,11 @@ export class DatepickerComponent implements OnInit {
             if (this.isYearSelectVisible && !this.yearSelectDOM.nativeElement.contains(event.target)) {
                 this.hideYearSelect();
             }
-        })
+        });
+
+        console.log(this.stringToDate('22.01.2007'));
+        console.log(this.stringToDate('28.02.2018'));
+        console.log(this.stringToDate('55.22.2018'));
     }
 
     showMonthSelect() {
@@ -200,5 +204,36 @@ export class DatepickerComponent implements OnInit {
         const year = '' + date.getFullYear();
 
         return '' + this.format.replace('dd', day).replace('mm', month).replace('yyyy', year);
+    }
+
+    /**
+     * Преобразует строку в формате this.format в объект даты.
+     * Делаем это вручную, а не с помощью Date.parse, чтобы добиться кроссбраузерности.
+     * @param {string} string
+     * @returns {Date}
+     */
+    stringToDate(string: string): Date {
+        if (!string) {
+            return null;
+        }
+
+        const newDate = new Date();
+
+        try {
+            ['dd', 'mm', 'yyyy'].forEach((part) => {
+                const index = this.format.indexOf(part);
+                const length = part.length;
+
+                const value = +string.substr(index, length);
+
+                if (part === 'dd') newDate.setDate(value);
+                if (part === 'mm') newDate.setMonth(value - 1);
+                if (part === 'yyyy') newDate.setFullYear(value);
+            });
+        } catch(e) {
+
+        }
+
+        return newDate;
     }
 }
