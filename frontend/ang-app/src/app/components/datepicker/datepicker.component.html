@@ -1,7 +1,7 @@
 <div class="rmm-ng-datepicker">
     <div class="rmm-ng-datepicker__block rmm-ng-datepicker__block--border-bottom">
         <div class="rmm-ng-datepicker__controls">
-            <div class="rmm-ng-datepicker__select">
+            <div class="rmm-ng-datepicker__select" #monthSelect>
                 <span (click)="showMonthSelect()">
                     <b>{{months[month]}}</b>
                 </span>
@@ -10,7 +10,7 @@
                     <div *ngFor="let m of months; let i = index" (click)="setMonth(i); hideMonthSelect()" class="rmm-ng-datepicker__select-option">{{m}}</div>
                 </div>
             </div>
-            <div class="rmm-ng-datepicker__select">
+            <div class="rmm-ng-datepicker__select" #yearSelect>
                 <span (click)="showYearSelect()">
                     <b>{{year}}</b>
                 </span>

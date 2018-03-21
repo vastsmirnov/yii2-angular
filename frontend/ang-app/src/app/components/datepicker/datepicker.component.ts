@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 
 @Component({
     selector: 'app-datepicker',
@@ -17,18 +17,11 @@ export class DatepickerComponent implements OnInit {
 
     @Output() onSelect = new EventEmitter();
 
+    @ViewChild('monthSelect') private monthSelectDOM: ElementRef;
+    @ViewChild('yearSelect') private yearSelectDOM: ElementRef;
+
     date = new Date();
     selectedDate: Date;
-
-    public weekdays = [
-        'ПН',
-        'ВТ',
-        'СР',
-        'ЧТ',
-        'ПТ',
-        'СБ',
-        'ВС',
-    ];
 
     public months = [
         'Январь',
@@ -55,17 +48,20 @@ export class DatepickerComponent implements OnInit {
 
     ngOnInit() {
         document.addEventListener('click', (event) => {
+            /**
+             * Скрываем селекты с выбором месяца и года, если кликнули вне них.
+             */
+
             if (!this.isMonthSelectVisible && !this.isYearSelectVisible) {
                 return;
             }
-            if (!this.elementRef.nativeElement.contains(event.target)) {
-                if (this.isYearSelectVisible) {
-                    this.hideYearSelect();
-                }
 
-                if (this.isMonthSelectVisible) {
-                    this.hideMonthSelect();
-                }
+            if (this.isMonthSelectVisible && !this.monthSelectDOM.nativeElement.contains(event.target)) {
+                this.hideMonthSelect();
+            }
+
+            if (this.isYearSelectVisible && !this.yearSelectDOM.nativeElement.contains(event.target)) {
+                this.hideYearSelect();
             }
         })
     }
@@ -153,7 +149,7 @@ export class DatepickerComponent implements OnInit {
     }
 
     get emptyDaysBefore() {
-        const emptyDaysLength = this.date.getDay() % 7 + 1;
+        const emptyDaysLength = this.date.getDay() % 7;
         return new Array(emptyDaysLength === 7 ? 0: emptyDaysLength )
     }
 

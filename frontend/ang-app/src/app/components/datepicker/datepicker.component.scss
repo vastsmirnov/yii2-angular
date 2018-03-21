@@ -55,6 +55,11 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
 
     &__select {
         position: relative;
+        cursor: pointer;
+
+        > span:hover {
+            color: #3e9bcc;
+        }
     }
 
     &__select-options-container {
