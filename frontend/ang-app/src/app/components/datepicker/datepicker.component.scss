@@ -75,6 +75,7 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
         box-shadow: 0 0 10px 3px #ccc;
         padding: 0.25rem 0;
         user-select: none;
+        z-index: 2;
 
         &--right {
             right: 0;
