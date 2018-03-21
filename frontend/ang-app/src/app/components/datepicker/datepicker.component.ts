@@ -20,6 +20,8 @@ export class DatepickerComponent implements OnInit {
     @ViewChild('monthSelect') private monthSelectDOM: ElementRef;
     @ViewChild('yearSelect') private yearSelectDOM: ElementRef;
 
+    private today = new Date(2018, 0, 19);
+
     date = new Date();
     selectedDate: Date;
 
@@ -149,13 +151,13 @@ export class DatepickerComponent implements OnInit {
     }
 
     get emptyDaysBefore() {
-        const emptyDaysLength = this.date.getDay() % 7;
+        const emptyDaysLength = ( 7 - (this.date.getDate() - this.date.getDay()) % 7);
         return new Array(emptyDaysLength === 7 ? 0: emptyDaysLength )
     }
 
     setToday() {
-        this.date = new Date();
-        this.selectedDate = new Date();
+        this.date = new Date(this.today);
+        this.selectedDate = new Date(this.today);
     }
 
     isDaySelected(dayIndex) {
@@ -172,7 +174,7 @@ export class DatepickerComponent implements OnInit {
     }
 
     isToday(dayIndex) {
-        const date = new Date();
+        const date = this.today;
         const sMonth = date.getMonth();
         const sYear = date.getFullYear();
         const sDate = date.getDate();
