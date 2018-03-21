@@ -133,7 +133,7 @@ export class DatepickerComponent implements OnInit {
      */
     onYearScroll(event) {
         event.preventDefault();
-        this.currentVisibleYear += event.deltaY >= 0 ? 5: -5;
+        this.currentVisibleYear += event.deltaY >= 0 ? 6: -6;
     }
 
     /**
@@ -160,7 +160,7 @@ export class DatepickerComponent implements OnInit {
      * @returns {any[]}
      */
     get visibleYears() {
-        return Array.from(Array(10)).map((n, i) => this.currentVisibleYear - 6 + i);
+        return Array.from(Array(9)).map((n, i) => this.currentVisibleYear - 4 + i);
     }
 
     /**

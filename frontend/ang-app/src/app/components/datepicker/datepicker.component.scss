@@ -2,6 +2,29 @@ $dayWidth: 2rem;
 $dayMargin: 0.1rem;
 $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
 
+$monthWidth: 10rem;
+$monthMargin: $dayMargin;
+
+@mixin calendarItem() {
+    &:hover {
+        background: #eee;
+        cursor: pointer;
+    }
+
+    &.--current {
+        background: #ccc;
+    }
+
+    &.--selected {
+        background: #3e9bcc;
+        color: white;
+    }
+
+    &.--disabled {
+        opacity: 0.4;
+    }
+}
+
 :host {
     display: inline-block;
     user-select: none;
@@ -133,6 +156,25 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
             background: #fafafa;
             cursor: pointer;
         }
+    }
+
+
+    &__month-calendar,
+    &__year-calendar {
+        width: $contentWidth;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__month-calendar-item,
+    &__year-calendar-item {
+        width: calc((100% / 3) - 8px);
+        text-align: center;
+        margin: 4px;
+        padding: 10px 0;
+        border-radius: 15px;
+
+        @include calendarItem();
     }
 }
 
