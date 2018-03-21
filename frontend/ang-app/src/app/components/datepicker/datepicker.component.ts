@@ -219,7 +219,7 @@ export class DatepickerComponent implements OnInit {
      */
     get emptyDaysBefore() {
         const emptyDaysLength = ( 7 - (this.date.getDate() - this.date.getDay()) % 7);
-        return new Array(emptyDaysLength === 7 ? 0: emptyDaysLength )
+        return new Array(emptyDaysLength >= 7 ? emptyDaysLength % 7 : emptyDaysLength )
     }
 
     /**
