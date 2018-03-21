@@ -51,6 +51,10 @@ $contentWidth: ($dayWidth + 2 * $dayMargin) * 7;
             background: #3e9bcc;
             color: white;
         }
+
+        &--disabled {
+            opacity: 0.4;
+        }
     }
 
     &__select {

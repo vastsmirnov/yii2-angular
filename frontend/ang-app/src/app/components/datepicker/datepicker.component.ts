@@ -212,14 +212,39 @@ export class DatepickerComponent implements OnInit {
         return new Array(this.daysInMonth);
     }
 
-    /**
-     * Количество дней предыдущего месяца на первой неделе текущего.
-     * Если текущий месяц начался в четверг, то вернет массив из трух пустых дней до четверга.
-     * @returns {any[]}
-     */
-    get emptyDaysBefore() {
-        const emptyDaysLength = ( 7 - (this.date.getDate() - this.date.getDay()) % 7);
-        return new Array(emptyDaysLength >= 7 ? emptyDaysLength % 7 : emptyDaysLength )
+    get daysBefore() {
+        let emptyDaysLength = this.date.getDay() - 1;
+        if (emptyDaysLength < 0) {
+            emptyDaysLength = 6;
+        }
+
+        if (emptyDaysLength === 0) {
+            emptyDaysLength = 7;
+        }
+
+        const prevMonthDaysCount = new Date(this.year, this.month, 0).getDate();
+
+        const days = [];
+
+        for (let i = prevMonthDaysCount - emptyDaysLength + 1; i <= prevMonthDaysCount; i++) {
+            days.push(i);
+        }
+
+        return days;
+    }
+
+    get daysAfter() {
+        const totalCurrentLength = this.daysBefore.length + this.days.length;
+        const countAfter = 42 - totalCurrentLength;
+
+
+        const days = [];
+
+        for (let i = 1; i <= countAfter; i++) {
+            days.push(i);
+        }
+
+        return days;
     }
 
     /**
@@ -227,6 +252,7 @@ export class DatepickerComponent implements OnInit {
      */
     setToday() {
         this.date = new Date(this.today);
+        this.date.setDate(1);
         this.selectedDate = new Date(this.today);
     }
 
