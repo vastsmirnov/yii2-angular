@@ -20,9 +20,21 @@ export class DatepickerComponent implements OnInit {
     @ViewChild('monthSelect') private monthSelectDOM: ElementRef;
     @ViewChild('yearSelect') private yearSelectDOM: ElementRef;
 
-    private today = new Date(2018, 0, 19);
+    /**
+     * Сегодняшняя дата
+     * @type {Date}
+     */
+    private today = new Date();
 
-    date = new Date();
+    /**
+     * Текущая дата, которую отображаем (месяц и год. Конкретная дата не важна, берем по умолчанию первое число).
+     * @type {Date}
+     */
+    date = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
+
+    /**
+     * Выбранная пользователем дата
+     */
     selectedDate: Date;
 
     public months = [
@@ -40,9 +52,18 @@ export class DatepickerComponent implements OnInit {
         'Декабрь',
     ];
 
+    /**
+     * Видны ли селекты выбора месяца и года
+     * @type {boolean}
+     */
     isMonthSelectVisible = false;
     isYearSelectVisible = false;
 
+    /**
+     * Текущий отображаемый год в селекте выбора года.
+     * От него будут отображаться доступные годы до и после для выбора.
+     * @type {number}
+     */
     currentVisibleYear = this.date.getFullYear();
 
     constructor(private elementRef: ElementRef) {
@@ -89,20 +110,37 @@ export class DatepickerComponent implements OnInit {
         this.isYearSelectVisible = false;
     }
 
+    /**
+     * При скролле селекты выбора города смещаем доступные годы на 5 лет вперед или назад, в зависимости от
+     * направления скролла.
+     * @param event
+     */
     onYearScroll(event) {
         event.preventDefault();
         this.currentVisibleYear += event.deltaY >= 0 ? 5: -5;
     }
 
+    /**
+     * Изменяем текущий отображаемый год в селекте на значение value
+     * @param {number} value
+     */
     incrementVisibleYearByValue(value: number) {
         this.currentVisibleYear += value;
     }
 
+    /**
+     * Возвращает 10 городов для отображения в селекте.
+     * 6 до и 3 после значения в this.currentVisibleYear
+     * @returns {any[]}
+     */
     get visibleYears() {
-
         return Array.from(Array(10)).map((n, i) => this.currentVisibleYear - 6 + i);
     }
 
+    /**
+     * Утсановить месяц для отображения в календаре
+     * @param month
+     */
     setMonth(month) {
         if (month < 0) {
             this.date.setMonth(11);
@@ -115,10 +153,18 @@ export class DatepickerComponent implements OnInit {
         }
     }
 
+    /**
+     * Установить год для отображения в календаре
+     * @param year
+     */
     setYear(year) {
         this.date.setFullYear(year);
     }
 
+    /**
+     * Выбрать дату в календаре
+     * @param day
+     */
     selectDate(day) {
         this.selectedDate = new Date(this.year, this.month, day);
 
@@ -128,6 +174,10 @@ export class DatepickerComponent implements OnInit {
         });
     }
 
+    /**
+     * Изменить месяц на следующий/предыдущий при скролле на календаре
+     * @param event
+     */
     onScroll(event) {
         event.preventDefault();
 
@@ -146,7 +196,15 @@ export class DatepickerComponent implements OnInit {
         return this.date.getFullYear();
     }
 
+    /**
+     * Получить количество дней в текущем отображаемом месяце.
+     * @returns {number}
+     */
     get daysInMonth() {
+        /**
+         * Берем следующий месяц и устанавливаем его датой нулевой день, тем самым получаем число последнего дня в текущем
+         * месяца, которое равно количеству дней.
+         */
         return new Date(this.year, this.month+1, 0).getDate();
     }
 
@@ -154,16 +212,29 @@ export class DatepickerComponent implements OnInit {
         return new Array(this.daysInMonth);
     }
 
+    /**
+     * Количество дней предыдущего месяца на первой неделе текущего.
+     * Если текущий месяц начался в четверг, то вернет массив из трух пустых дней до четверга.
+     * @returns {any[]}
+     */
     get emptyDaysBefore() {
         const emptyDaysLength = ( 7 - (this.date.getDate() - this.date.getDay()) % 7);
         return new Array(emptyDaysLength === 7 ? 0: emptyDaysLength )
     }
 
+    /**
+     * Выбрать текущий день
+     */
     setToday() {
         this.date = new Date(this.today);
         this.selectedDate = new Date(this.today);
     }
 
+    /**
+     * Проверяет, выбран ли отображаемый день
+     * @param dayIndex
+     * @returns {boolean}
+     */
     isDaySelected(dayIndex) {
         if (!this.selectedDate) {
             return false;
@@ -177,6 +248,11 @@ export class DatepickerComponent implements OnInit {
 
     }
 
+    /**
+     * Является ли отображаемый день сегодняшним
+     * @param dayIndex
+     * @returns {boolean}
+     */
     isToday(dayIndex) {
         const date = this.today;
         const sMonth = date.getMonth();
@@ -185,7 +261,11 @@ export class DatepickerComponent implements OnInit {
         return (this.month === sMonth) && (this.year === sYear) && (dayIndex === sDate);
     }
 
-
+    /**
+     * Преобразует дату в строку заданного формата (this.format)
+     * @param {Date} date
+     * @returns {any}
+     */
     dateToFormat(date: Date) {
         if (!date) {
             return '';
