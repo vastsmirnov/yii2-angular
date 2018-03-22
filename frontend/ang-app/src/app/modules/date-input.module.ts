@@ -6,12 +6,14 @@ import {BrowserModule} from "@angular/platform-browser";
 import {DatepickerComponent} from "./components/datepicker/datepicker.component";
 import {DateInputComponent} from "./components/date-input/date-input.component";
 import {ClickOutsideDirective} from "./directives/click-outside.directive";
+import {BestPositionDirective} from "./directives/best-position.directive";
 
 @NgModule({
     declarations: [
         DatepickerComponent,
         DateInputComponent,
-        ClickOutsideDirective
+        ClickOutsideDirective,
+        BestPositionDirective
     ],
     exports: [
         DatepickerComponent,

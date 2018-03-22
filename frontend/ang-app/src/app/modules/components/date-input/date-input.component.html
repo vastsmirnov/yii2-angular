@@ -4,7 +4,7 @@
         <button type="button" data-pick-button (click)="togglePicker()"></button>
     </span>
 
-    <span *ngIf="!isPickerHidden" data-picker>
+    <span *ngIf="!isPickerHidden" data-picker bestPosition>
         <app-datepicker [format]="format" (onSelect)="onDatePick($event)" [value]="fbControl.value"></app-datepicker>
     </span>
 </span>
