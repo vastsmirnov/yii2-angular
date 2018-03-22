@@ -1,0 +1,42 @@
+:host,
+[data-input],
+[data-element] {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+
+}
+
+input {
+    width: 100%;
+    padding-right: 35px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+[data-pick-button] {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url('icon.svg');
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+}
+
+[data-picker] {
+    position: absolute;
+    left: calc(100% + 15px);
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 20px 0 grey;
+    z-index: 2;
+}

@@ -4,13 +4,16 @@ import {CommonModule} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {DatepickerComponent} from "./components/datepicker/datepicker.component";
+import {DateInputComponent} from "./components/date-input/date-input.component";
 
 @NgModule({
     declarations: [
-        DatepickerComponent
+        DatepickerComponent,
+        DateInputComponent
     ],
     exports: [
-        DatepickerComponent
+        DatepickerComponent,
+        DateInputComponent
     ],
     imports: [
         BrowserModule,

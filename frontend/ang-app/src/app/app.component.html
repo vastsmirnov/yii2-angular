@@ -6,6 +6,33 @@
             Hello
         </h1>
 
+        <div [formGroup]="form">
+            <label>Name: <input type="text" formControlName="name"></label> <br>
+            <label>Age: <input type="number" formControlName="age"></label> <br>
+            <label>Birthday: <input type="text" formControlName="birthday"></label> <br>
+            <label>Month: <input type="text" formControlName="month"></label> <br>
+            <label>Year:</label>
+            <app-date-input [fbControl]="form.controls['year']" [format]="'yyyy'"></app-date-input> <br>
+
+            <br>
+            <br>
+            <br>
+
+            <label>Birthday: </label>
+            <app-date-input [fbControl]="form.controls['birthday']"></app-date-input>
+            <br>
+
+            <label>Birthday by focus: </label>
+            <app-date-input [fbControl]="form.controls['birthday']" [pickByFocus]="true"></app-date-input>
+            <br>
+        </div>
+
+        <pre>
+            <code>
+                {{this.form.value | json}}
+            </code>
+        </pre>
+
 
         <div style="margin: 100px 0">
             <app-datepicker [value]="'20.07.2008'"></app-datepicker>

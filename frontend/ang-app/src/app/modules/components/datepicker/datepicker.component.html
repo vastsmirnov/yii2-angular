@@ -50,7 +50,6 @@
 
     <button *ngIf="(type !== 'yyyy') && (!this.dateFrom || this.dateFrom.date <= today) && (!this.dateTo || this.dateTo.date > today)" type="button" class="rmm-ng-datepicker__today-button" (click)="setToday()">Сегодня: {{dateToFormat(today)}}</button>
 </div>
-<p>Выбранная дата: {{dateToFormat(selectedDate)}}</p>
 
 <ng-template #dayCalendar>
     <!--<div class="rmm-ng-datepicker__calendar-button" (click)="setMonth(month - 1)">

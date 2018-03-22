@@ -11,6 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { ArticlePreviewComponent } from './article-preview/article-preview.component';
 import {CommonModule} from "@angular/common";
 import {DateInputModule} from "./modules/date-input.module";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {DateInputModule} from "./modules/date-input.module";
         BrowserModule,
         HttpClientModule,
         CommonModule,
+        ReactiveFormsModule,
         DateInputModule
     ],
     providers: [
