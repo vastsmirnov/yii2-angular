@@ -54,9 +54,18 @@
         <span>▲</span>
     </div>-->
     <div class="rmm-ng-datepicker__calendar" (wheel)="onScroll($event)">
-        <span *ngFor="let day of daysBefore;" class="rmm-ng-datepicker__day rmm-ng-datepicker__day--disabled" (click)="setMonth(month - 1); selectDate(day)">{{day}}</span>
-        <span *ngFor="let day of days; let i = index" (click)="selectDate(i + 1)" class="rmm-ng-datepicker__day" [ngClass]="{'--selected': isDaySelected(i + 1), '--current': isToday(i + 1)}">{{i + 1}} </span>
-        <span *ngFor="let day of daysAfter" class="rmm-ng-datepicker__day rmm-ng-datepicker__day--disabled" (click)="setMonth(month + 1); selectDate(day)">{{day}}</span>
+        <span *ngFor="let day of daysBefore;" class="rmm-ng-datepicker__day --hidden">{{day}}</span>
+        <span *ngFor="let day of currentMonthDays; let i = index"
+              (click)="day.active ? selectDate(day.day) : null"
+              class="rmm-ng-datepicker__day"
+              [ngClass]="{
+              '--selected': day.selected,
+              '--current': day.current,
+              '--disabled': !day.active
+              }">
+            {{day.day}}
+        </span>
+        <span *ngFor="let day of daysAfter" class="rmm-ng-datepicker__day --hidden">{{day}}</span>
     </div>
     <!--<div class="rmm-ng-datepicker__calendar-button" (click)="setMonth(month + 1)">
         <span>▼</span>

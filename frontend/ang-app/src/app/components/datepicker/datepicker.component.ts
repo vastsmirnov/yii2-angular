@@ -10,10 +10,7 @@ export class DatepickerComponent implements OnInit {
     @Input() format = 'dd.mm.yyyy';         // Формат даты
     @Input() startAt: string;               // Дата начала
     @Input() endWith: string;               // Дата окончания
-    @Input() defaultDate: string;           // Дата окончания
-    @Input() inline = false;                // Всегда показывать пикер?
-    @Input() hideInput = false;             // Скрывать input?
-    @Input() inputClass: string;            // CSS класс для input
+    @Input() value: string;                 // Текущее значение
 
     @Output() onSelect = new EventEmitter();
 
@@ -34,6 +31,8 @@ export class DatepickerComponent implements OnInit {
      * @type {Date}
      */
     private today = new Date();
+    private dateFrom;
+    private dateTo;
 
     /**
      * Текущая дата, которую отображаем (месяц и год. Конкретная дата не важна, берем по умолчанию первое число).
@@ -107,6 +106,19 @@ export class DatepickerComponent implements OnInit {
         } else {
             this.type = 'yyyy';
         }
+
+        const dateFrom = this.stringToDate(this.startAt);
+        if (dateFrom) {
+            this.dateFrom = {
+                d: dateFrom.getDate(),
+                m: dateFrom.getMonth(),
+                y: dateFrom.getFullYear(),
+                date: dateFrom
+            };
+            console.log('--- 1: ', this.dateFrom)
+
+        }
+
     }
 
     showMonthSelect() {
@@ -239,6 +251,21 @@ export class DatepickerComponent implements OnInit {
         return new Array(this.daysInMonth);
     }
 
+    get currentMonthDays() {
+        const days = [];
+
+        for (let i = 1; i<= this.daysInMonth; i++) {
+            days.push({
+                day: i,
+                active: this.isDateAvailable(i),
+                selected: this.isDaySelected(i),
+                current: this.isToday(i)
+            })
+        }
+
+        return days;
+    }
+
     get daysBefore() {
         let emptyDaysLength = this.date.getDay() - 1;
         if (emptyDaysLength < 0) {
@@ -315,6 +342,41 @@ export class DatepickerComponent implements OnInit {
         return (this.month === sMonth) && (this.year === sYear) && (dayIndex === sDate);
     }
 
+    isYearAvailable(year) {
+        if (this.dateFrom && this.dateFrom.getFullYear() > year) {
+            return false;
+        }
+
+        if (this.dateTo && this.dateTo.getFullYear() < year) {
+            return false;
+        }
+
+        return true;
+    }
+
+    isMonthAvailable(month, year) {
+        return true;
+    }
+
+    isDateAvailable(dayIndex) {
+        if (this.dateFrom) {
+            if (this.year < this.dateFrom.y) {
+                return false;
+            }
+
+            if (this.year === this.dateFrom.y && this.month < this.dateFrom.m) {
+                return false;
+            }
+
+            if (this.year === this.dateFrom.y && this.month === this.dateFrom.m && (dayIndex < this.dateFrom.d)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
     /**
      * Преобразует дату в строку заданного формата (this.format)
      * @param {Date} date
@@ -351,14 +413,16 @@ export class DatepickerComponent implements OnInit {
             return null;
         }
 
-        const newDate = new Date();
+        const newDate = new Date(1970, 0, 1);
 
         try {
             ['dd', 'mm', 'yyyy'].forEach((part) => {
                 const index = this.format.indexOf(part);
                 const length = part.length;
 
-                const value = +string.substr(index, length);
+                const value = index >= 0 ? +string.substr(index, length) : null;
+
+                if (!value) return;
 
                 if (part === 'dd') newDate.setDate(value);
                 if (part === 'mm') newDate.setMonth(value - 1);

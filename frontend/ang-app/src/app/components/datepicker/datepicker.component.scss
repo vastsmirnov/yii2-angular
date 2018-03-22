@@ -69,11 +69,11 @@ $monthMargin: $dayMargin;
         height: $dayWidth;
         width: $dayWidth;
         margin: $dayMargin;
-        cursor: pointer;
         border-radius: 50%;
 
-        &:hover {
+        &:hover:not(.--hidden):not(.--disabled) {
             background: #eee;
+            cursor: pointer;
         }
 
         &.--current {
@@ -85,8 +85,13 @@ $monthMargin: $dayMargin;
             color: white;
         }
 
-        &--disabled {
+        &.--hidden {
             opacity: 0.4;
+        }
+
+        &.--disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
     }
 
