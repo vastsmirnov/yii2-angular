@@ -9,8 +9,8 @@ import { ArticlesListComponent } from './articles-list/articles-list.component';
 import {ArticleListService} from "./services/article-list.service";
 import {HttpClientModule} from "@angular/common/http";
 import { ArticlePreviewComponent } from './article-preview/article-preview.component';
-import { DatepickerComponent } from './components/datepicker/datepicker.component';
 import {CommonModule} from "@angular/common";
+import {DateInputModule} from "./modules/date-input.module";
 
 
 @NgModule({
@@ -20,12 +20,12 @@ import {CommonModule} from "@angular/common";
         AppComponent,
         ArticlesListComponent,
         ArticlePreviewComponent,
-        DatepickerComponent
     ],
     imports: [
         BrowserModule,
         HttpClientModule,
-        CommonModule
+        CommonModule,
+        DateInputModule
     ],
     providers: [
         ArticleListService
