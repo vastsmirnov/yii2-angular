@@ -127,6 +127,11 @@ export class DatepickerComponent implements OnInit {
             };
         }
 
+        this.updateDateFromValue(this.value);
+    }
+
+    ngOnChanges() {
+        this.updateDateFromValue(this.value);
     }
 
     showMonthSelect() {
@@ -234,6 +239,14 @@ export class DatepickerComponent implements OnInit {
         } else {
             this.setMonth(this.month - 1);
         }
+    }
+
+    updateDateFromValue(value: string) {
+        const date = this.stringToDate(value);
+        if (!date) return;
+        this.selectedDate = new Date(date);
+        this.date = new Date(date);
+        this.currentVisibleYear = date.getFullYear();
     }
 
     get month() {
