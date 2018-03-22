@@ -119,6 +119,18 @@ export class DatepickerComponent implements OnInit {
 
         }
 
+        const dateTo = this.stringToDate(this.endWith);
+        if (dateTo) {
+            this.dateTo = {
+                d: dateTo.getDate(),
+                m: dateTo.getMonth(),
+                y: dateTo.getFullYear(),
+                date: dateTo
+            };
+            console.log('--- 2: ', this.dateTo)
+
+        }
+
     }
 
     showMonthSelect() {
@@ -373,6 +385,20 @@ export class DatepickerComponent implements OnInit {
             }
         }
 
+        if (this.dateTo) {
+            if (this.year > this.dateTo.y) {
+                return false;
+            }
+
+            if (this.year === this.dateTo.y && this.month > this.dateTo.m) {
+                return false;
+            }
+
+            if (this.year === this.dateTo.y && this.month === this.dateTo.m && (dayIndex > this.dateTo.d)) {
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -411,6 +437,10 @@ export class DatepickerComponent implements OnInit {
     stringToDate(string: string): Date {
         if (!string) {
             return null;
+        }
+
+        if (string === 'today') {
+            return new Date(this.today);
         }
 
         const newDate = new Date(1970, 0, 1);
