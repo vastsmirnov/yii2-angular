@@ -90,12 +90,13 @@
             <div (click)="incrementVisibleYearByValue(5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--down">▾</div>
         </div>
         <div class="rmm-ng-datepicker__month-calendar" >
-            <div *ngFor="let m of months; let i = index" (click)="setMonth(i); selectDate(1)"
+            <div *ngFor="let m of currentYearMonths; let i = index" (click)="m.active ? selectMonth(i) : null"
                  class="rmm-ng-datepicker__month-calendar-item"
                  [ngClass]="{
-                '--current': year === today.getFullYear() && today.getMonth() === i,
-                '--selected': selectedDate && year === selectedDate.getFullYear() && selectedDate.getMonth() === i
-            }">{{m}}</div>
+                '--current': m.current,
+                '--selected': m.selected,
+                '--disabled': !m.active
+            }">{{m.month}}</div>
         </div>
     </div>
     <!--<div class="rmm-ng-datepicker__calendar-button" (click)="setYear(year + 1)">

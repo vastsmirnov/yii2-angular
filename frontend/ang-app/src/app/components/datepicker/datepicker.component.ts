@@ -225,6 +225,11 @@ export class DatepickerComponent implements OnInit {
         });
     }
 
+    selectMonth(monthIndex: number) {
+        this.setMonth(monthIndex);
+        this.selectDate(1);
+    }
+
     /**
      * Изменить месяц на следующий/предыдущий при скролле на календаре
      * @param event
@@ -261,6 +266,19 @@ export class DatepickerComponent implements OnInit {
 
     get days() {
         return new Array(this.daysInMonth);
+    }
+
+    get currentYearMonths() {
+        const m = this.months.map((month, index) => {
+            return {
+                month: month,
+                active: this.isMonthAvailable(index),
+                selected: this.selectedDate && this.year === this.selectedDate.getFullYear() && this.selectedDate.getMonth() === index,
+                current: this.year === this.today.getFullYear() && this.today.getMonth() === index
+            }
+        });
+
+        return m;
     }
 
     get currentMonthDays() {
@@ -366,7 +384,27 @@ export class DatepickerComponent implements OnInit {
         return true;
     }
 
-    isMonthAvailable(month, year) {
+    isMonthAvailable(month) {
+        if (this.dateFrom) {
+            if (this.year < this.dateFrom.y) {
+                return false;
+            }
+
+            if (this.year === this.dateFrom.y && month < this.dateFrom.m) {
+                return false;
+            }
+        }
+
+        if (this.dateTo) {
+            if (this.year > this.dateTo.y) {
+                return false;
+            }
+
+            if (this.year === this.dateTo.y && month > this.dateTo.m) {
+                return false;
+            }
+        }
+
         return true;
     }
 

@@ -6,7 +6,7 @@ $monthWidth: 10rem;
 $monthMargin: $dayMargin;
 
 @mixin calendarItem() {
-    &:hover {
+    &:hover:not(.--hidden):not(.--disabled):not(.--selected) {
         background: #eee;
         cursor: pointer;
     }
@@ -18,10 +18,16 @@ $monthMargin: $dayMargin;
     &.--selected {
         background: #3e9bcc;
         color: white;
+        cursor: pointer;
+    }
+
+    &.--hidden {
+        opacity: 0.4;
     }
 
     &.--disabled {
-        opacity: 0.4;
+        opacity: 0.6;
+        cursor: not-allowed;
     }
 }
 
@@ -71,28 +77,7 @@ $monthMargin: $dayMargin;
         margin: $dayMargin;
         border-radius: 50%;
 
-        &:hover:not(.--hidden):not(.--disabled) {
-            background: #eee;
-            cursor: pointer;
-        }
-
-        &.--current {
-            background: #ccc;
-        }
-
-        &.--selected {
-            background: #3e9bcc;
-            color: white;
-        }
-
-        &.--hidden {
-            opacity: 0.4;
-        }
-
-        &.--disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+        @include calendarItem();
     }
 
     &__select {
