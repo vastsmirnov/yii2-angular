@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <div class="rmm-ng-datepicker__block rmm-ng-datepicker__block--border-bottom">
+    <div class="rmm-ng-datepicker__block">
         <div [ngSwitch]="type">
             <div *ngSwitchCase="'dd'">
                 <ng-container *ngTemplateOutlet="dayCalendar;"></ng-container>
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <button *ngIf="type !== 'yyyy'" type="button" class="rmm-ng-datepicker__today-button" (click)="setToday()">Сегодня: {{dateToFormat(today)}}</button>
+    <button *ngIf="(type !== 'yyyy') && (!this.dateFrom || this.dateFrom.date <= today) && (!this.dateTo || this.dateTo.date > today)" type="button" class="rmm-ng-datepicker__today-button" (click)="setToday()">Сегодня: {{dateToFormat(today)}}</button>
 </div>
 <p>Выбранная дата: {{dateToFormat(selectedDate)}}</p>
 
