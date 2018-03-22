@@ -43,7 +43,7 @@
 
             <label>Birthday by focus: </label>
             <div>
-                <app-date-input [fbControl]="form.controls['birthday']" [pickByFocus]="true"></app-date-input>
+                <app-date-input [from]="'today'" [fbControl]="form.controls['birthday']" [pickByFocus]="true"></app-date-input>
             </div>
         </div>
 

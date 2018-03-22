@@ -11,6 +11,8 @@ export class DateInputComponent implements OnInit {
     @Input() fbGroup: FormGroup;
     @Input() pickByFocus: false;
     @Input() format: string = 'dd.mm.yyyy';
+    @Input() from: string;
+    @Input() to: string;
 
     @ViewChild('pickerContainer') private pickerContainer: ElementRef;
 

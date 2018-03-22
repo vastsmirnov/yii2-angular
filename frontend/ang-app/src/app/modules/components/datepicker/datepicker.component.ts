@@ -472,7 +472,7 @@ export class DatepickerComponent implements OnInit {
      * @returns {Date}
      */
     stringToDate(string: string): Date {
-        if (!string || string.length !== this.format.length) {
+        if (!string || string.length !== this.format.length && string !== 'today') {
             return null;
         }
 
