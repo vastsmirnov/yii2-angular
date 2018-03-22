@@ -78,24 +78,6 @@ export class DatepickerComponent implements OnInit {
     }
 
     ngOnInit() {
-        document.addEventListener('click', (event) => {
-            /**
-             * Скрываем селекты с выбором месяца и года, если кликнули вне них.
-             */
-
-            if (!this.isMonthSelectVisible && !this.isYearSelectVisible) {
-                return;
-            }
-
-            if (this.isMonthSelectVisible && !this.monthSelectDOM.nativeElement.contains(event.target)) {
-                this.hideMonthSelect();
-            }
-
-            if (this.isYearSelectVisible && !this.yearSelectDOM.nativeElement.contains(event.target)) {
-                this.hideYearSelect();
-            }
-        });
-
         /**
          * Определяем тип пикера в зависимости от указанного формата даты
          */
@@ -127,10 +109,6 @@ export class DatepickerComponent implements OnInit {
             };
         }
 
-        this.updateDateFromValue(this.value);
-    }
-
-    ngOnChanges() {
         this.updateDateFromValue(this.value);
     }
 
@@ -354,7 +332,7 @@ export class DatepickerComponent implements OnInit {
     setToday() {
         this.date = new Date(this.today);
         this.date.setDate(1);
-        this.selectedDate = new Date(this.today);
+        this.selectDate(this.today.getDate());
         this.currentVisibleYear = this.today.getFullYear();
     }
 
@@ -494,7 +472,7 @@ export class DatepickerComponent implements OnInit {
      * @returns {Date}
      */
     stringToDate(string: string): Date {
-        if (!string) {
+        if (!string || string.length !== this.format.length) {
             return null;
         }
 

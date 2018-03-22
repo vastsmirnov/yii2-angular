@@ -5,11 +5,13 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {DatepickerComponent} from "./components/datepicker/datepicker.component";
 import {DateInputComponent} from "./components/date-input/date-input.component";
+import {ClickOutsideDirective} from "./directives/click-outside.directive";
 
 @NgModule({
     declarations: [
         DatepickerComponent,
-        DateInputComponent
+        DateInputComponent,
+        ClickOutsideDirective
     ],
     exports: [
         DatepickerComponent,

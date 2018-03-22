@@ -1,4 +1,4 @@
-<span #pickerContainer data-input>
+<span #pickerContainer data-input clickOutside (clickOutside)="checkTarget($event)">
     <span *ngIf="fbControl" data-element>
         <input #input type="text" value="{{fbControl.value}}" (input)="updateControlValue(input.value)" (click)="pickByFocus ? showPicker() : null"/>
         <button type="button" data-pick-button (click)="togglePicker()"></button>

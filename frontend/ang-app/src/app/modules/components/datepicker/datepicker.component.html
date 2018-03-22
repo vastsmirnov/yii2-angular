@@ -1,25 +1,25 @@
 <div class="rmm-ng-datepicker">
     <div class="rmm-ng-datepicker__block rmm-ng-datepicker__block--border-bottom" *ngIf="type === 'dd'">
         <div class="rmm-ng-datepicker__controls">
-            <div class="rmm-ng-datepicker__select" #monthSelect *ngIf=" type === 'dd'">
+            <div class="rmm-ng-datepicker__select" clickOutside (clickOutside)="hideMonthSelect()">
                 <span (click)="showMonthSelect()">
                     <b>{{months[month]}}</b>
                     &nbsp;
                     <span class="rmm-inline-icon-arrow-up-down" style="font-size: 0.7em">&nbsp;</span>
                 </span>
 
-                <div class="rmm-ng-datepicker__select-options-container" *ngIf="isMonthSelectVisible">
+                <div class="rmm-ng-datepicker__select-options-container" [attr.aria-hidden]="!isMonthSelectVisible">
                     <div *ngFor="let m of months; let i = index" (click)="setMonth(i); hideMonthSelect()" class="rmm-ng-datepicker__select-option">{{m}}</div>
                 </div>
             </div>
-            <div class="rmm-ng-datepicker__select" #yearSelect>
+            <div class="rmm-ng-datepicker__select" clickOutside (clickOutside)="hideYearSelect()">
                 <span (click)="showYearSelect()">
                     <b>{{year}}</b>
                     &nbsp;
                     <span class="rmm-inline-icon-arrow-up-down" style="font-size: 0.7em">&nbsp;</span>
                 </span>
 
-                <div class="rmm-ng-datepicker__select-options-container rmm-ng-datepicker__select-options-container--right" *ngIf="isYearSelectVisible" (wheel)="onYearScroll($event)">
+                <div [attr.aria-hidden]="!isYearSelectVisible" class="rmm-ng-datepicker__select-options-container rmm-ng-datepicker__select-options-container--right" (wheel)="onYearScroll($event)">
                     <div (click)="incrementVisibleYearByValue(-5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--up">▴</div>
                     <div *ngFor="let y of currentYears"
                          (click)="setYear(y.year); hideYearSelect();"

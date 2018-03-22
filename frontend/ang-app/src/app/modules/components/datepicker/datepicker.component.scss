@@ -180,3 +180,7 @@ $monthMargin: $dayMargin;
     @include icon();
     background-image: url("arrows-up-and-down.svg");
 }
+
+[aria-hidden="true"] {
+    display: none;
+}
