@@ -21,10 +21,13 @@
 
                 <div class="rmm-ng-datepicker__select-options-container rmm-ng-datepicker__select-options-container--right" *ngIf="isYearSelectVisible" (wheel)="onYearScroll($event)">
                     <div (click)="incrementVisibleYearByValue(-5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--up">▴</div>
-                    <div *ngFor="let y of visibleYears"
-                         (click)="setYear(y); hideYearSelect();"
+                    <div *ngFor="let y of currentYears"
+                         (click)="setYear(y.year); hideYearSelect();"
                          class="rmm-ng-datepicker__select-option"
-                         [ngClass]="{'--current': year === y}">{{y}}</div>
+                         [ngClass]="{
+                         '--current': y.current,
+                         '--disabled': !y.active
+                         }">{{y.year}}</div>
                     <div (click)="incrementVisibleYearByValue(5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--down">▾</div>
                 </div>
             </div>
@@ -45,7 +48,7 @@
         </div>
     </div>
 
-    <button type="button" class="rmm-ng-datepicker__today-button" (click)="setToday()">Сегодня: {{dateToFormat(today)}}</button>
+    <button *ngIf="type !== 'yyyy'" type="button" class="rmm-ng-datepicker__today-button" (click)="setToday()">Сегодня: {{dateToFormat(today)}}</button>
 </div>
 <p>Выбранная дата: {{dateToFormat(selectedDate)}}</p>
 
@@ -79,13 +82,14 @@
     <div style="display: flex; align-items: center" (wheel)="onMonthScroll($event)">
         <div>
             <div (click)="incrementVisibleYearByValue(-5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--up">▴</div>
-            <div *ngFor="let y of visibleYears" (click)="setYear(y); hideYearSelect();"
+            <div *ngFor="let y of currentYears" (click)="setYear(y.year)"
                  class="rmm-ng-datepicker__select-option"
                  [ngClass]="{
-                 '--current': today.getFullYear() === y,
-                 '--selected': year === y
+                 '--current': y.current,
+                 '--selected': y.year === year,
+                 '--disabled': !y.active
                  }">
-                {{y}}
+                {{y.year}}
             </div>
             <div (click)="incrementVisibleYearByValue(5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--down">▾</div>
         </div>
@@ -109,13 +113,14 @@
         <span>▲</span>
     </div>
     <div (wheel)="onYearScroll($event)" class="rmm-ng-datepicker__year-calendar">
-        <div *ngFor="let y of visibleYears; let i = index"
-             (click)="setYear(y); selectDate(1)"
+        <div *ngFor="let y of currentYears; let i = index"
+             (click)="y.active ? selectYear(y.year) : null"
              class="rmm-ng-datepicker__year-calendar-item"
              [ngClass]="{
-                '--current': y === today.getFullYear(),
-                '--selected': selectedDate && y === selectedDate.getFullYear()
-            }">{{y}}</div>
+                '--current': y.current,
+                '--selected': y.selected,
+                '--disabled': !y.active
+            }">{{y.year}}</div>
     </div>
     <div class="rmm-ng-datepicker__calendar-button" (click)="incrementVisibleYearByValue(6)">
         <span>▼</span>

@@ -114,20 +114,7 @@ $monthMargin: $dayMargin;
         padding: 0 0.75rem;
         line-height: 1.5;
 
-        &:hover {
-            background: #3e9bcc;
-            color: white;
-            cursor: pointer;
-        }
-
-        &.--current {
-            background: #ccc;
-        }
-
-        &.--selected {
-            background: #3e9bcc;
-            color: white;
-        }
+        @include calendarItem();
 
         &--up,
         &--down {

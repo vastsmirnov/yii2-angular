@@ -115,8 +115,6 @@ export class DatepickerComponent implements OnInit {
                 y: dateFrom.getFullYear(),
                 date: dateFrom
             };
-            console.log('--- 1: ', this.dateFrom)
-
         }
 
         const dateTo = this.stringToDate(this.endWith);
@@ -127,8 +125,6 @@ export class DatepickerComponent implements OnInit {
                 y: dateTo.getFullYear(),
                 date: dateTo
             };
-            console.log('--- 2: ', this.dateTo)
-
         }
 
     }
@@ -179,16 +175,6 @@ export class DatepickerComponent implements OnInit {
     }
 
     /**
-     * Возвращает 10 городов для отображения в селекте.
-     * 6 до и 3 после значения в this.currentVisibleYear
-     * @returns {any[]}
-     */
-    get visibleYears() {
-        const countToShow = this.type === 'mm' ? 7 : 9;
-        return Array.from(Array(countToShow)).map((n, i) => this.currentVisibleYear - Math.floor(countToShow/2) + i);
-    }
-
-    /**
      * Утсановить месяц для отображения в календаре
      * @param month
      */
@@ -230,6 +216,12 @@ export class DatepickerComponent implements OnInit {
         this.selectDate(1);
     }
 
+    selectYear(year: number) {
+        this.setYear(year);
+        this.setMonth(0);
+        this.selectDate(1)
+    }
+
     /**
      * Изменить месяц на следующий/предыдущий при скролле на календаре
      * @param event
@@ -264,12 +256,25 @@ export class DatepickerComponent implements OnInit {
         return new Date(this.year, this.month+1, 0).getDate();
     }
 
-    get days() {
-        return new Array(this.daysInMonth);
+    get currentYears() {
+        const countToShow = this.type === 'mm' ? 7 : 9;
+        const years = [];
+
+        for (let i = 0; i < countToShow; i++) {
+            const y = this.currentVisibleYear - Math.floor(countToShow/2) + i;
+            years.push({
+                year: y,
+                active: this.isYearAvailable(y),
+                current: this.today.getFullYear() === y,
+                selected: this.selectedDate && this.selectedDate.getFullYear() === y,
+            })
+        }
+        // Array.from(Array(countToShow)).map((n, i) => this.currentVisibleYear - Math.floor(countToShow/2) + i);
+        return years;
     }
 
     get currentYearMonths() {
-        const m = this.months.map((month, index) => {
+        return this.months.map((month, index) => {
             return {
                 month: month,
                 active: this.isMonthAvailable(index),
@@ -277,8 +282,6 @@ export class DatepickerComponent implements OnInit {
                 current: this.year === this.today.getFullYear() && this.today.getMonth() === index
             }
         });
-
-        return m;
     }
 
     get currentMonthDays() {
@@ -318,7 +321,7 @@ export class DatepickerComponent implements OnInit {
     }
 
     get daysAfter() {
-        const totalCurrentLength = this.daysBefore.length + this.days.length;
+        const totalCurrentLength = this.daysBefore.length + this.daysInMonth;
         const countAfter = 42 - totalCurrentLength;
 
 
@@ -372,13 +375,17 @@ export class DatepickerComponent implements OnInit {
         return (this.month === sMonth) && (this.year === sYear) && (dayIndex === sDate);
     }
 
-    isYearAvailable(year) {
-        if (this.dateFrom && this.dateFrom.getFullYear() > year) {
-            return false;
+    isYearAvailable(year: number) {
+        if (this.dateFrom) {
+            if (year < this.dateFrom.y) {
+                return false;
+            }
         }
 
-        if (this.dateTo && this.dateTo.getFullYear() < year) {
-            return false;
+        if (this.dateTo) {
+            if (year > this.dateTo.y) {
+                return false;
+            }
         }
 
         return true;
