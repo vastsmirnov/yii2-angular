@@ -286,6 +286,7 @@ export class DatepickerComponent implements OnInit {
         this.date = new Date(date);
         this.date.setDate(1);
         this.currentVisibleYear = date.getFullYear();
+        this.dateService.setSelectedDate(this.selectedDate);
     }
 
     get month() {
