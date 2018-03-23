@@ -1,9 +1,11 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {DatepickerService} from "./datepicker.service";
 
 @Component({
     selector: 'app-datepicker',
     templateUrl: './datepicker.component.html',
-    styleUrls: ['./datepicker.component.scss']
+    styleUrls: ['./datepicker.component.scss'],
+    providers: [DatepickerService]
 })
 export class DatepickerComponent implements OnInit {
 
@@ -74,8 +76,31 @@ export class DatepickerComponent implements OnInit {
      */
     currentVisibleYear = this.date.getFullYear();
 
-    constructor(private elementRef: ElementRef) {
+
+    currentDaysList: any[] = [];
+    prevDaysList: any[] = [];
+    nextDaysList: any[] = [];
+
+
+    currentMonthsList: any[] = [];
+    currentYearsList: any[] = [];
+
+
+
+
+
+
+    constructor(
+        private elementRef: ElementRef,
+        private dateService: DatepickerService
+    ) {
+
     }
+
+
+
+
+
 
     ngOnInit() {
         /**
@@ -110,6 +135,16 @@ export class DatepickerComponent implements OnInit {
         }
 
         this.updateDateFromValue(this.value);
+
+
+        this.updateDays();
+    }
+
+    private updateDays(): void {
+        this.currentDaysList = this.dateService.getCurrentDays(this.date);
+        this.prevDaysList = this.dateService.getDaysBeforeCurrent(this.date);
+        this.nextDaysList = this.dateService.getDaysAfterCurrent(this.currentDaysList.length + this.prevDaysList.length);
+        console.log('---: updateDays()', this.currentDaysList, this.prevDaysList, this.nextDaysList);
     }
 
     showMonthSelect() {
@@ -170,6 +205,7 @@ export class DatepickerComponent implements OnInit {
             this.setYear(this.year + 1);
         } else {
             this.date.setMonth(month);
+            this.updateDays();
         }
     }
 
@@ -179,6 +215,7 @@ export class DatepickerComponent implements OnInit {
      */
     setYear(year) {
         this.date.setFullYear(year);
+        this.updateDays();
     }
 
     /**
@@ -274,56 +311,6 @@ export class DatepickerComponent implements OnInit {
                 current: this.year === this.today.getFullYear() && this.today.getMonth() === index
             }
         });
-    }
-
-    get currentMonthDays() {
-        const days = [];
-
-        for (let i = 1; i<= this.daysInMonth; i++) {
-            days.push({
-                day: i,
-                active: this.isDateAvailable(i),
-                selected: this.isDaySelected(i),
-                current: this.isToday(i)
-            })
-        }
-
-        return days;
-    }
-
-    get daysBefore() {
-        let emptyDaysLength = this.date.getDay() - 1;
-        if (emptyDaysLength < 0) {
-            emptyDaysLength = 6;
-        }
-
-        if (emptyDaysLength === 0) {
-            emptyDaysLength = 7;
-        }
-
-        const prevMonthDaysCount = new Date(this.year, this.month, 0).getDate();
-
-        const days = [];
-
-        for (let i = prevMonthDaysCount - emptyDaysLength + 1; i <= prevMonthDaysCount; i++) {
-            days.push(i);
-        }
-
-        return days;
-    }
-
-    get daysAfter() {
-        const totalCurrentLength = this.daysBefore.length + this.daysInMonth;
-        const countAfter = 42 - totalCurrentLength;
-
-
-        const days = [];
-
-        for (let i = 1; i <= countAfter; i++) {
-            days.push(i);
-        }
-
-        return days;
     }
 
     /**
