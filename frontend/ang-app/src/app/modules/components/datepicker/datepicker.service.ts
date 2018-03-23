@@ -99,7 +99,6 @@ export class DatepickerService {
         const year = date.getFullYear();
 
         return MonthsList.map((m, i) => {
-            console.log('---: ', i, this.today.getMonth(), year, this.today.getFullYear());
             return {
                 month: m,
                 active: this.isMonthAvailable(date, i),

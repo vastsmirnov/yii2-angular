@@ -323,30 +323,6 @@ export class DatepickerComponent implements OnInit {
         return true;
     }
 
-    isMonthAvailable(month) {
-        if (this.dateFrom) {
-            if (this.year < this.dateFrom.y) {
-                return false;
-            }
-
-            if (this.year === this.dateFrom.y && month < this.dateFrom.m) {
-                return false;
-            }
-        }
-
-        if (this.dateTo) {
-            if (this.year > this.dateTo.y) {
-                return false;
-            }
-
-            if (this.year === this.dateTo.y && month > this.dateTo.m) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Преобразует дату в строку заданного формата (this.format)
      * @param {Date} date
