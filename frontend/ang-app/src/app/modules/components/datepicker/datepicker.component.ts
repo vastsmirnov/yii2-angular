@@ -224,6 +224,9 @@ export class DatepickerComponent implements OnInit {
      */
     selectDate(day) {
         this.selectedDate = new Date(this.year, this.month, day);
+        this.dateService.setSelectedDate(this.selectedDate);
+
+        this.updateDays();
 
         this.onSelect.emit({
             date: this.selectedDate,
@@ -309,24 +312,6 @@ export class DatepickerComponent implements OnInit {
         this.date.setDate(1);
         this.selectDate(this.today.getDate());
         this.currentVisibleYear = this.today.getFullYear();
-    }
-
-    /**
-     * Проверяет, выбран ли отображаемый день
-     * @param dayIndex
-     * @returns {boolean}
-     */
-    isDaySelected(dayIndex) {
-        if (!this.selectedDate) {
-            return false;
-        }
-
-        const sMonth = this.selectedDate.getMonth();
-        const sYear = this.selectedDate.getFullYear();
-        const sDate = this.selectedDate.getDate();
-
-        return (this.month === sMonth) && (this.year === sYear) && (dayIndex === sDate);
-
     }
 
     isYearAvailable(year: number) {

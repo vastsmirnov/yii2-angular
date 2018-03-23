@@ -7,9 +7,14 @@ export class DatepickerService {
     private dateFrom: Date;
     private dateTo: Date;
     private today: Date = new Date();
+    private selectedDate: Date;
 
     constructor() {
 
+    }
+
+    setSelectedDate(date: Date): void {
+        this.selectedDate = date;
     }
 
     getCurrentDays(date: Date) {
@@ -21,7 +26,8 @@ export class DatepickerService {
             days.push({
                 day: i,
                 active: this.isDayAvailable(date, i),
-                current: this.isToday(date, i)
+                current: this.isToday(date, i),
+                selected: this.isDateSelected(date, i)
             });
         }
 
@@ -140,6 +146,38 @@ export class DatepickerService {
             if (date.getFullYear() === this.dateTo.getFullYear() && date.getMonth() === this.dateTo.getMonth() && dayIndex > this.dateTo.getDate()) {
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Проверяет, выбран ли отображаемый день
+     * @param {Date} date
+     * @param dayIndex
+     * @returns {boolean}
+     */
+    private isDateSelected(date: Date, dayIndex?) {
+        if (!this.selectedDate || !date) {
+            return false;
+        }
+
+        const nDate = dayIndex ? date : this.normalizeDate(date);
+
+        const sMonth = this.selectedDate.getMonth();
+        const sYear = this.selectedDate.getFullYear();
+        const sDate = this.selectedDate.getDate();
+
+        if (sYear !== nDate.getFullYear()) {
+            return false;
+        }
+
+        if (sMonth !== nDate.getMonth()) {
+            return false;
+        }
+
+        if (dayIndex && dayIndex !== sDate) {
+            return false;
         }
 
         return true;
