@@ -385,26 +385,10 @@ export class DatepickerComponent implements OnInit {
     /**
      * Преобразует дату в строку заданного формата (this.format)
      * @param {Date} date
-     * @returns {any}
+     * @returns {string}
      */
-    dateToFormat(date: Date) {
-        if (!date) {
-            return '';
-        }
-
-        let day = '' + date.getDate();
-        if (day.length === 1) {
-            day = '0' + day;
-        }
-
-        let month = '' + (date.getMonth() + 1);
-        if (month.length === 1) {
-            month = '0' + month;
-        }
-
-        const year = '' + date.getFullYear();
-
-        return '' + this.format.replace('dd', day).replace('mm', month).replace('yyyy', year);
+    dateToFormat(date: Date): string {
+        return this.dateService.dateToFormat(date, this.format);
     }
 
     /**
@@ -414,33 +398,6 @@ export class DatepickerComponent implements OnInit {
      * @returns {Date}
      */
     stringToDate(string: string): Date {
-        if (!string || string.length !== this.format.length && string !== 'today') {
-            return null;
-        }
-
-        if (string === 'today') {
-            return new Date(this.today);
-        }
-
-        const newDate = new Date(1970, 0, 1);
-
-        try {
-            ['dd', 'mm', 'yyyy'].forEach((part) => {
-                const index = this.format.indexOf(part);
-                const length = part.length;
-
-                const value = index >= 0 ? +string.substr(index, length) : null;
-
-                if (!value) return;
-
-                if (part === 'dd') newDate.setDate(value);
-                if (part === 'mm') newDate.setMonth(value - 1);
-                if (part === 'yyyy') newDate.setFullYear(value);
-            });
-        } catch(e) {
-
-        }
-
-        return newDate;
+        return this.dateService.stringToDate(string, this.format);
     }
 }

@@ -143,4 +143,68 @@ export class DatepickerService {
 
         return true;
     }
+
+    /**
+     * Преобразует дату в строку заданного формата
+     * @param {Date} date
+     * @param {string} format
+     * @returns {any}
+     */
+    dateToFormat(date: Date, format: string): string {
+        if (!date || !format) {
+            return '';
+        }
+
+        let day = '' + date.getDate();
+        if (day.length === 1) {
+            day = '0' + day;
+        }
+
+        let month = '' + (date.getMonth() + 1);
+        if (month.length === 1) {
+            month = '0' + month;
+        }
+
+        const year = '' + date.getFullYear();
+
+        return '' + format.replace('dd', day).replace('mm', month).replace('yyyy', year);
+    }
+
+    /**
+     * Преобразует строку в формате this.format в объект даты.
+     * Делаем это вручную, а не с помощью Date.parse, чтобы добиться кроссбраузерности.
+     * @param {string} string
+     * @param {string} format
+     * @returns {Date}
+     */
+    stringToDate(string: string, format: string): Date {
+        if (!string || !format || string.length !== format.length && string !== 'today') {
+            return null;
+        }
+
+        if (string === 'today') {
+            return new Date(this.today);
+        }
+
+        const newDate = new Date(1970, 0, 1);
+
+        try {
+            ['dd', 'mm', 'yyyy'].forEach((part) => {
+                const index = format.indexOf(part);
+                const length = part.length;
+
+                const value = index >= 0 ? +string.substr(index, length) : null;
+
+                if (!value) return;
+
+                if (part === 'dd') newDate.setDate(value);
+                if (part === 'mm') newDate.setMonth(value - 1);
+                if (part === 'yyyy') newDate.setFullYear(value);
+            });
+        } catch(e) {
+
+        }
+
+        return newDate;
+    }
 }
