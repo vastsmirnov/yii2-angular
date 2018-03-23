@@ -5,6 +5,7 @@ import MonthsList from './monts.data';
 export class DatepickerService {
 
     private weeksToShow = 6;
+    private yearsToShow = 7;
     private dateFrom: Date;
     private dateTo: Date;
     private today: Date = new Date();
@@ -17,6 +18,10 @@ export class DatepickerService {
     setSelectedDate(date: Date): void {
         this.selectedDate = date;
         console.log('---: ', this.selectedDate)
+    }
+
+    setYearsToShow(count: number) {
+        this.yearsToShow = count;
     }
 
     getCurrentDays(date: Date) {
@@ -108,6 +113,23 @@ export class DatepickerService {
         });
     }
 
+    getCurrentYears(mainYear: number): any[] {
+        const countToShow = this.yearsToShow;
+        const years = [];
+
+        for (let i = 0; i < countToShow; i++) {
+            const y = mainYear - Math.floor(countToShow/2) + i;
+            years.push({
+                year: y,
+                active: this.isYearAvailable(y),
+                current: this.isToday(y),
+                selected: this.isDateSelected(y),
+            })
+        }
+
+        return years;
+    }
+
     /**
      * Получить количество дней в месяце с датой date
      * @param {Date} date
@@ -186,6 +208,23 @@ export class DatepickerService {
             }
 
             if (date.getFullYear() === this.dateTo.getFullYear() && monthIndex > this.dateTo.getMonth()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    private isYearAvailable(year: number) {
+        if (this.dateFrom) {
+            if (year < this.dateFrom.getFullYear()) {
+                return false;
+            }
+        }
+
+        if (this.dateTo) {
+            if (year > this.dateTo.getFullYear()) {
                 return false;
             }
         }

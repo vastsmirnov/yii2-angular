@@ -118,37 +118,50 @@ export class DatepickerComponent implements OnInit {
             };
         }
 
+        this.dateService.setYearsToShow(this.type === 'mm' ? 7 : 9);
+
         this.updateDateFromValue(this.value);
 
         this.updateDays();
         this.updateMonths();
+        this.updateYears();
     }
 
     private updateDate() {
-        switch (this.type) {
+/*        switch (this.type) {
             case 'mm': {
                 this.updateMonths();
                 break;
             }
             case 'yyyy': {
+                this.updateYears();
                 break;
             }
             default : {
                 this.updateDays();
             }
-        }
+        }*/
+
+        this.updateMonths();
+        this.updateYears();
+        this.updateDays();
     }
 
     private updateDays(): void {
         this.currentDaysList = this.dateService.getCurrentDays(this.date);
         this.prevDaysList = this.dateService.getDaysBeforeCurrent(this.date);
         this.nextDaysList = this.dateService.getDaysAfterCurrent(this.currentDaysList.length + this.prevDaysList.length);
-        console.log('---: updateDays()', this.currentDaysList, this.prevDaysList, this.nextDaysList);
+        // console.log('---: updateDays()', this.currentDaysList, this.prevDaysList, this.nextDaysList);
     }
 
     private updateMonths(): void {
         this.currentMonthsList = this.dateService.getCurrentMonths(this.date);
-        console.log('---: updateMonths()', this.currentMonthsList)
+        // console.log('---: updateMonths()', this.currentMonthsList)
+    }
+
+    private updateYears(): void {
+        this.currentYearsList = this.dateService.getCurrentYears(this.currentVisibleYear);
+        console.log('---: updateYears()', this.currentYearsList);
     }
 
     showMonthSelect() {
@@ -161,6 +174,7 @@ export class DatepickerComponent implements OnInit {
 
     showYearSelect() {
         this.currentVisibleYear = this.year;
+        this.updateYears();
         this.isYearSelectVisible = true;
     }
 
@@ -176,6 +190,7 @@ export class DatepickerComponent implements OnInit {
     onYearScroll(event) {
         event.preventDefault();
         this.currentVisibleYear += event.deltaY >= 0 ? 6: -6;
+        this.updateYears();
     }
 
     /**
@@ -184,8 +199,9 @@ export class DatepickerComponent implements OnInit {
      */
     onMonthScroll(event) {
         event.preventDefault();
-        this.setYear(this.year + +(event.deltaY >= 0 ? 1 : -1));
-        this.currentVisibleYear = this.year;
+        const newYear = this.year + +(event.deltaY >= 0 ? 1 : -1);
+        this.currentVisibleYear = newYear;
+        this.setYear(newYear);
     }
 
     /**
@@ -280,23 +296,6 @@ export class DatepickerComponent implements OnInit {
         return this.date.getFullYear();
     }
 
-    get currentYears() {
-        const countToShow = this.type === 'mm' ? 7 : 9;
-        const years = [];
-
-        for (let i = 0; i < countToShow; i++) {
-            const y = this.currentVisibleYear - Math.floor(countToShow/2) + i;
-            years.push({
-                year: y,
-                active: this.isYearAvailable(y),
-                current: this.today.getFullYear() === y,
-                selected: this.selectedDate && this.selectedDate.getFullYear() === y,
-            })
-        }
-        // Array.from(Array(countToShow)).map((n, i) => this.currentVisibleYear - Math.floor(countToShow/2) + i);
-        return years;
-    }
-
     /**
      * Выбрать текущий день
      */
@@ -305,22 +304,6 @@ export class DatepickerComponent implements OnInit {
         this.date.setDate(1);
         this.selectDate(this.today.getDate());
         this.currentVisibleYear = this.today.getFullYear();
-    }
-
-    isYearAvailable(year: number) {
-        if (this.dateFrom) {
-            if (year < this.dateFrom.y) {
-                return false;
-            }
-        }
-
-        if (this.dateTo) {
-            if (year > this.dateTo.y) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
