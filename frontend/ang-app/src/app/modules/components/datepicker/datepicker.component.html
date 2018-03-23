@@ -3,13 +3,17 @@
         <div class="rmm-ng-datepicker__controls">
             <div class="rmm-ng-datepicker__select" clickOutside (clickOutside)="hideMonthSelect()">
                 <span (click)="showMonthSelect()">
-                    <b>{{months[month]}}</b>
+                    <b>{{currentMonthsList[month].month}}</b>
                     &nbsp;
                     <span class="rmm-inline-icon-arrow-up-down" style="font-size: 0.7em">&nbsp;</span>
                 </span>
 
                 <div class="rmm-ng-datepicker__select-options-container" [attr.aria-hidden]="!isMonthSelectVisible">
-                    <div *ngFor="let m of months; let i = index" (click)="setMonth(i); hideMonthSelect()" class="rmm-ng-datepicker__select-option">{{m}}</div>
+                    <div *ngFor="let m of currentMonthsList; let i = index"
+                         (click)="setMonth(i); hideMonthSelect()"
+                         class="rmm-ng-datepicker__select-option">
+                        {{m.month}}
+                    </div>
                 </div>
             </div>
             <div class="rmm-ng-datepicker__select" clickOutside (clickOutside)="hideYearSelect()">
@@ -96,7 +100,7 @@
             <div (click)="incrementVisibleYearByValue(5)" class="rmm-ng-datepicker__select-option rmm-ng-datepicker__select-option--down">▾</div>
         </div>
         <div class="rmm-ng-datepicker__month-calendar" >
-            <div *ngFor="let m of currentYearMonths; let i = index" (click)="m.active ? selectMonth(i) : null"
+            <div *ngFor="let m of currentMonthsList; let i = index" (click)="m.active ? selectMonth(i) : null"
                  class="rmm-ng-datepicker__month-calendar-item"
                  [ngClass]="{
                 '--current': m.current,

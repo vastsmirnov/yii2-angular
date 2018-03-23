@@ -47,21 +47,6 @@ export class DatepickerComponent implements OnInit {
      */
     selectedDate: Date;
 
-    public months = [
-        'Январь',
-        'Февраль',
-        'Март',
-        'Апрель',
-        'Май',
-        'Июнь',
-        'Июль',
-        'Август',
-        'Сентябрь',
-        'Октябрь',
-        'Ноябрь',
-        'Декабрь',
-    ];
-
     /**
      * Видны ли селекты выбора месяца и года
      * @type {boolean}
@@ -94,7 +79,6 @@ export class DatepickerComponent implements OnInit {
         private elementRef: ElementRef,
         private dateService: DatepickerService
     ) {
-
     }
 
 
@@ -136,8 +120,23 @@ export class DatepickerComponent implements OnInit {
 
         this.updateDateFromValue(this.value);
 
-
         this.updateDays();
+        this.updateMonths();
+    }
+
+    private updateDate() {
+        switch (this.type) {
+            case 'mm': {
+                this.updateMonths();
+                break;
+            }
+            case 'yyyy': {
+                break;
+            }
+            default : {
+                this.updateDays();
+            }
+        }
     }
 
     private updateDays(): void {
@@ -145,6 +144,11 @@ export class DatepickerComponent implements OnInit {
         this.prevDaysList = this.dateService.getDaysBeforeCurrent(this.date);
         this.nextDaysList = this.dateService.getDaysAfterCurrent(this.currentDaysList.length + this.prevDaysList.length);
         console.log('---: updateDays()', this.currentDaysList, this.prevDaysList, this.nextDaysList);
+    }
+
+    private updateMonths(): void {
+        this.currentMonthsList = this.dateService.getCurrentMonths(this.date);
+        console.log('---: updateMonths()', this.currentMonthsList)
     }
 
     showMonthSelect() {
@@ -205,7 +209,7 @@ export class DatepickerComponent implements OnInit {
             this.setYear(this.year + 1);
         } else {
             this.date.setMonth(month);
-            this.updateDays();
+            this.updateDate();
         }
     }
 
@@ -215,7 +219,7 @@ export class DatepickerComponent implements OnInit {
      */
     setYear(year) {
         this.date.setFullYear(year);
-        this.updateDays();
+        this.updateDate();
     }
 
     /**
@@ -226,7 +230,7 @@ export class DatepickerComponent implements OnInit {
         this.selectedDate = new Date(this.year, this.month, day);
         this.dateService.setSelectedDate(this.selectedDate);
 
-        this.updateDays();
+        this.updateDate();
 
         this.onSelect.emit({
             date: this.selectedDate,
@@ -291,17 +295,6 @@ export class DatepickerComponent implements OnInit {
         }
         // Array.from(Array(countToShow)).map((n, i) => this.currentVisibleYear - Math.floor(countToShow/2) + i);
         return years;
-    }
-
-    get currentYearMonths() {
-        return this.months.map((month, index) => {
-            return {
-                month: month,
-                active: this.isMonthAvailable(index),
-                selected: this.selectedDate && this.year === this.selectedDate.getFullYear() && this.selectedDate.getMonth() === index,
-                current: this.year === this.today.getFullYear() && this.today.getMonth() === index
-            }
-        });
     }
 
     /**

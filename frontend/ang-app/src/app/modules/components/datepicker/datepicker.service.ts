@@ -1,4 +1,5 @@
 import {Injectable} from "@angular/core";
+import MonthsList from './monts.data';
 
 @Injectable()
 export class DatepickerService {
@@ -15,6 +16,7 @@ export class DatepickerService {
 
     setSelectedDate(date: Date): void {
         this.selectedDate = date;
+        console.log('---: ', this.selectedDate)
     }
 
     getCurrentDays(date: Date) {
@@ -22,12 +24,15 @@ export class DatepickerService {
 
         const days = [];
 
+        const year = date.getFullYear();
+        const month = date.getMonth();
+
         for (let i = 1; i<= daysCount; i++) {
             days.push({
                 day: i,
                 active: this.isDayAvailable(date, i),
-                current: this.isToday(date, i),
-                selected: this.isDateSelected(date, i)
+                current: this.isToday(year, month, i),
+                selected: this.isDateSelected(year, month, i)
             });
         }
 
@@ -90,6 +95,20 @@ export class DatepickerService {
         return days;
     }
 
+    getCurrentMonths(date: Date) {
+        const year = date.getFullYear();
+
+        return MonthsList.map((m, i) => {
+            console.log('---: ', i, this.today.getMonth(), year, this.today.getFullYear());
+            return {
+                month: m,
+                active: this.isMonthAvailable(date, i),
+                current: this.isToday(year, i),
+                selected: this.isDateSelected(year, i)
+            }
+        });
+    }
+
     /**
      * Получить количество дней в месяце с датой date
      * @param {Date} date
@@ -119,7 +138,7 @@ export class DatepickerService {
      * @param dayIndex
      * @returns {boolean}
      */
-    private isDayAvailable(date, dayIndex) {
+    private isDayAvailable(date, dayIndex?) {
         if (this.dateFrom) {
             if (date.getFullYear() < this.dateFrom.getFullYear()) {
                 return false;
@@ -151,32 +170,55 @@ export class DatepickerService {
         return true;
     }
 
-    /**
-     * Проверяет, выбран ли отображаемый день
-     * @param {Date} date
-     * @param dayIndex
-     * @returns {boolean}
-     */
-    private isDateSelected(date: Date, dayIndex?) {
-        if (!this.selectedDate || !date) {
-            return false;
+    private isMonthAvailable(date, monthIndex) {
+        if (this.dateFrom) {
+            if (date.getFullYear() < this.dateFrom.getFullYear()) {
+                return false;
+            }
+
+            if (date.getFullYear() === this.dateFrom.getFullYear() && monthIndex < this.dateFrom.getMonth()) {
+                return false;
+            }
         }
 
-        const nDate = dayIndex ? date : this.normalizeDate(date);
+        if (this.dateTo) {
+            if (date.getFullYear() > this.dateTo.getFullYear()) {
+                return false;
+            }
+
+            if (date.getFullYear() === this.dateTo.getFullYear() && monthIndex > this.dateTo.getMonth()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Проверяет, выбран ли отображаемый день
+     * @param {number} year
+     * @param {number} month
+     * @param {number} day
+     * @returns {boolean}
+     */
+    private isDateSelected(year: number, month?: number, day?: number) {
+        if (!this.selectedDate) {
+            return false;
+        }
 
         const sMonth = this.selectedDate.getMonth();
         const sYear = this.selectedDate.getFullYear();
         const sDate = this.selectedDate.getDate();
 
-        if (sYear !== nDate.getFullYear()) {
+        if (year !== undefined && sYear !== year) {
             return false;
         }
 
-        if (sMonth !== nDate.getMonth()) {
+        if (month !== undefined && sMonth !== month) {
             return false;
         }
 
-        if (dayIndex && dayIndex !== sDate) {
+        if (day !== undefined && sDate !== day) {
             return false;
         }
 
@@ -185,20 +227,21 @@ export class DatepickerService {
 
     /**
      * Является ли переданная дата сегодняшей?
-     * @param {Date} date
-     * @param {number} dayIndex
+     * @param {number} year
+     * @param {number} month
+     * @param {number} day
      * @returns {boolean}
      */
-    private isToday(date: Date, dayIndex?: number): boolean {
-        if (this.today.getFullYear() !== date.getFullYear()) {
+    private isToday(year: number, month?: number, day?: number): boolean {
+        if (year !== undefined && this.today.getFullYear() !== year) {
             return false;
         }
 
-        if (this.today.getMonth() !== date.getMonth()) {
+        if (month !== undefined && this.today.getMonth() !== month) {
             return false;
         }
 
-        if (dayIndex && dayIndex !== this.today.getDate()) {
+        if (day !== undefined && this.today.getDate() !== day) {
             return false;
         }
 
