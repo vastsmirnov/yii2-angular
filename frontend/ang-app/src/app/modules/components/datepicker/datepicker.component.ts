@@ -329,19 +329,6 @@ export class DatepickerComponent implements OnInit {
 
     }
 
-    /**
-     * Является ли отображаемый день сегодняшним
-     * @param dayIndex
-     * @returns {boolean}
-     */
-    isToday(dayIndex) {
-        const date = this.today;
-        const sMonth = date.getMonth();
-        const sYear = date.getFullYear();
-        const sDate = date.getDate();
-        return (this.month === sMonth) && (this.year === sYear) && (dayIndex === sDate);
-    }
-
     isYearAvailable(year: number) {
         if (this.dateFrom) {
             if (year < this.dateFrom.y) {

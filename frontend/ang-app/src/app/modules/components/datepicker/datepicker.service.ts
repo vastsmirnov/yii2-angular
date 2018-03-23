@@ -20,7 +20,8 @@ export class DatepickerService {
         for (let i = 1; i<= daysCount; i++) {
             days.push({
                 day: i,
-                active: this.isDayAvailable(date, i)
+                active: this.isDayAvailable(date, i),
+                current: this.isToday(date, i)
             });
         }
 
@@ -144,6 +145,27 @@ export class DatepickerService {
         return true;
     }
 
+    /**
+     * Является ли переданная дата сегодняшей?
+     * @param {Date} date
+     * @param {number} dayIndex
+     * @returns {boolean}
+     */
+    private isToday(date: Date, dayIndex?: number): boolean {
+        if (this.today.getFullYear() !== date.getFullYear()) {
+            return false;
+        }
+
+        if (this.today.getMonth() !== date.getMonth()) {
+            return false;
+        }
+
+        if (dayIndex && dayIndex !== this.today.getDate()) {
+            return false;
+        }
+
+        return true;
+    }
     /**
      * Преобразует дату в строку заданного формата
      * @param {Date} date
