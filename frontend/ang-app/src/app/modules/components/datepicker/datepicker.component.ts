@@ -273,18 +273,6 @@ export class DatepickerComponent implements OnInit {
         return this.date.getFullYear();
     }
 
-    /**
-     * Получить количество дней в текущем отображаемом месяце.
-     * @returns {number}
-     */
-    get daysInMonth() {
-        /**
-         * Берем следующий месяц и устанавливаем его датой нулевой день, тем самым получаем число последнего дня в текущем
-         * месяца, которое равно количеству дней.
-         */
-        return new Date(this.year, this.month+1, 0).getDate();
-    }
-
     get currentYears() {
         const countToShow = this.type === 'mm' ? 7 : 9;
         const years = [];
@@ -393,39 +381,6 @@ export class DatepickerComponent implements OnInit {
 
         return true;
     }
-
-    isDateAvailable(dayIndex) {
-        if (this.dateFrom) {
-            if (this.year < this.dateFrom.y) {
-                return false;
-            }
-
-            if (this.year === this.dateFrom.y && this.month < this.dateFrom.m) {
-                return false;
-            }
-
-            if (this.year === this.dateFrom.y && this.month === this.dateFrom.m && (dayIndex < this.dateFrom.d)) {
-                return false;
-            }
-        }
-
-        if (this.dateTo) {
-            if (this.year > this.dateTo.y) {
-                return false;
-            }
-
-            if (this.year === this.dateTo.y && this.month > this.dateTo.m) {
-                return false;
-            }
-
-            if (this.year === this.dateTo.y && this.month === this.dateTo.m && (dayIndex > this.dateTo.d)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
 
     /**
      * Преобразует дату в строку заданного формата (this.format)
