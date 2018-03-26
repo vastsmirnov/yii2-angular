@@ -70,21 +70,11 @@ export class DatepickerComponent implements OnInit {
     currentMonthsList: any[] = [];
     currentYearsList: any[] = [];
 
-
-
-
-
-
     constructor(
         private elementRef: ElementRef,
         private dateService: DatepickerService
     ) {
     }
-
-
-
-
-
 
     ngOnInit() {
         /**
@@ -128,20 +118,6 @@ export class DatepickerComponent implements OnInit {
     }
 
     private updateDate() {
-/*        switch (this.type) {
-            case 'mm': {
-                this.updateMonths();
-                break;
-            }
-            case 'yyyy': {
-                this.updateYears();
-                break;
-            }
-            default : {
-                this.updateDays();
-            }
-        }*/
-
         this.updateMonths();
         this.updateYears();
         this.updateDays();
@@ -210,6 +186,7 @@ export class DatepickerComponent implements OnInit {
      */
     incrementVisibleYearByValue(value: number) {
         this.currentVisibleYear += value;
+        this.updateYears();
     }
 
     /**
