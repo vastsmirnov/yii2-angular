@@ -17,11 +17,25 @@ export class DatepickerService {
 
     setSelectedDate(date: Date): void {
         this.selectedDate = date;
-        console.log('---: ', this.selectedDate)
+        // console.log('---: ', this.selectedDate)
     }
 
     setYearsToShow(count: number) {
         this.yearsToShow = count;
+    }
+
+    setDateFrom(dateString: string, format: string) {
+        const dateFrom = this.stringToDate(dateString, format);
+        if (!dateFrom) return;
+        this.dateFrom = dateFrom;
+        // console.log('---: df ', this.dateFrom);
+    }
+
+    setDateTo(dateString: string, format: string) {
+        const dateTo = this.stringToDate(dateString, format);
+        if (!dateTo) return;
+        this.dateTo = dateTo;
+        // console.log('---: dt ', this.dateTo);
     }
 
     getCurrentDays(date: Date) {

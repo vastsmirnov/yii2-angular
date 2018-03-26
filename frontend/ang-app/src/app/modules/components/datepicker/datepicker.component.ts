@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DatepickerService} from "./datepicker.service";
 
 @Component({
@@ -14,10 +14,11 @@ export class DatepickerComponent implements OnInit {
     @Input() endWith: string;               // Дата окончания
     @Input() value: string;                 // Текущее значение
 
+    /**
+     * Событие выбора даты в пикере.
+     * @type {EventEmitter<any>}
+     */
     @Output() onSelect = new EventEmitter();
-
-    @ViewChild('monthSelect') private monthSelectDOM: ElementRef;
-    @ViewChild('yearSelect') private yearSelectDOM: ElementRef;
 
     /**
      * Тип календаря:
@@ -33,8 +34,6 @@ export class DatepickerComponent implements OnInit {
      * @type {Date}
      */
     private today = new Date();
-    private dateFrom;
-    private dateTo;
 
     /**
      * Текущая дата, которую отображаем (месяц и год. Конкретная дата не важна, берем по умолчанию первое число).
@@ -61,17 +60,35 @@ export class DatepickerComponent implements OnInit {
      */
     currentVisibleYear = this.date.getFullYear();
 
-
+    /**
+     * Коллекции для отображения
+     * Жни текущего месяца
+     * */
     currentDaysList: any[] = [];
+    /**
+     * Дни предыдущего месяца
+     * @type {Array}
+     */
     prevDaysList: any[] = [];
+    /**
+     * Дни следующего месяца
+     * @type {Array}
+     */
     nextDaysList: any[] = [];
 
-
+    /**
+     * Список текущих месяцев
+     * @type {Array}
+     */
     currentMonthsList: any[] = [];
+
+    /**
+     * Список отображаемых лет
+     * @type {Array}
+     */
     currentYearsList: any[] = [];
 
     constructor(
-        private elementRef: ElementRef,
         private dateService: DatepickerService
     ) {
     }
@@ -88,33 +105,23 @@ export class DatepickerComponent implements OnInit {
             this.type = 'yyyy';
         }
 
-        const dateFrom = this.stringToDate(this.startAt);
-        if (dateFrom) {
-            this.dateFrom = {
-                d: dateFrom.getDate(),
-                m: dateFrom.getMonth(),
-                y: dateFrom.getFullYear(),
-                date: dateFrom
-            };
+        if (this.startAt) {
+            this.dateService.setDateFrom(this.startAt, this.format);
         }
 
-        const dateTo = this.stringToDate(this.endWith);
-        if (dateTo) {
-            this.dateTo = {
-                d: dateTo.getDate(),
-                m: dateTo.getMonth(),
-                y: dateTo.getFullYear(),
-                date: dateTo
-            };
+
+        if (this.endWith) {
+            this.dateService.setDateTo(this.endWith, this.format);
         }
 
+        /**
+         * В зависимости от типа пикера (день, месяц, год) юудем отображать разное количество лет
+         */
         this.dateService.setYearsToShow(this.type === 'mm' ? 7 : 9);
 
         this.updateDateFromValue(this.value);
 
-        this.updateDays();
-        this.updateMonths();
-        this.updateYears();
+        this.updateDate();
     }
 
     private updateDate() {
@@ -137,7 +144,7 @@ export class DatepickerComponent implements OnInit {
 
     private updateYears(): void {
         this.currentYearsList = this.dateService.getCurrentYears(this.currentVisibleYear);
-        console.log('---: updateYears()', this.currentYearsList);
+        // console.log('---: updateYears()', this.currentYearsList);
     }
 
     showMonthSelect() {
@@ -261,7 +268,7 @@ export class DatepickerComponent implements OnInit {
         if (!date) return;
         this.selectedDate = new Date(date);
         this.date = new Date(date);
-        this.date.setDate(1);
+        this.date.setDate(1); // Нормализация даты, с которой работаем, чтобы корректно высчитывать новые даты на основании этой.
         this.currentVisibleYear = date.getFullYear();
         this.dateService.setSelectedDate(this.selectedDate);
     }
